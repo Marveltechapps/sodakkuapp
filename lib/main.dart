@@ -25,11 +25,13 @@ void main() {
     debugPrint('💥 Flutter error: ${details.exception}');
     debugPrint('📌 Stack trace: ${details.stack}');
   };
-  runApp(ShowCaseWidget(
-    builder: (context) {
-      return MyApp();
-    }
-  ));
+  runApp(
+    ShowCaseWidget(
+      builder: (context) {
+        return MyApp();
+      },
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
