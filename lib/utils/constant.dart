@@ -143,7 +143,7 @@ var getLatLonUrl =
 bool isLive = true;
 
 var devUrl = "http://43.204.144.74:8000/api/v1/";
-var liveUrl = "https://www.selorg.com/api/v1/";
+var liveUrl = "https://www.sodakku.com/api/v1/";
 
 var baseUrl = isLive ? liveUrl : devUrl;
 

@@ -10,7 +10,7 @@ Future<http.Client> createPinnedHttpClient() async {
     return http.Client();
   }
 
-  final sslCert = await rootBundle.load('assets/cert/selorg_cert.pem');
+  final sslCert = await rootBundle.load('assets/cert/sodakku_cert.pem');
 
   SecurityContext context = SecurityContext(withTrustedRoots: false);
   context.setTrustedCertificatesBytes(sslCert.buffer.asUint8List());
