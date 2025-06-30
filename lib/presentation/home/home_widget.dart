@@ -44,6 +44,8 @@ class HomeWidgetScreen extends StatelessWidget {
   static List<BannerList> festivalbanners = [];
   static List<BannerList> dailybanners = [];
   static List<BannerList> offerbanners = [];
+  static List<BannerList> offerbanners10 = [];
+  static List<BannerList> dealsbanners = [];
   static ProductStyleResponse freshFruitsresponse = ProductStyleResponse();
   static ProductStyleResponse groceryEssentialsResponse =
       ProductStyleResponse();
@@ -213,12 +215,16 @@ class HomeWidgetScreen extends StatelessWidget {
             offerbanners = [];
             debugPrint(state.banners.message);
             for (int i = 0; i < state.banners.data!.length; i++) {
-              if (state.banners.data![i].bannerType == "festival") {
+              if (state.banners.data![i].bannerType == "Festival offers") {
                 festivalbanners.add(state.banners.data![i]);
-              } else if (state.banners.data![i].bannerType == "dailyUsage") {
+              } else if (state.banners.data![i].bannerType == "Product Offer") {
                 dailybanners.add(state.banners.data![i]);
-              } else if (state.banners.data![i].bannerType == "offer") {
+              } else if (state.banners.data![i].bannerType == "Week Offer") {
                 offerbanners.add(state.banners.data![i]);
+              } else if (state.banners.data![i].bannerType == "10% Offer") {
+                offerbanners10.add(state.banners.data![i]);
+              } else if (state.banners.data![i].bannerType == "Deals offers") {
+                dealsbanners.add(state.banners.data![i]);
               }
             }
           } else if (state is OrganicFreshFruitsLoadedState) {
@@ -869,7 +875,132 @@ class HomeWidgetScreen extends StatelessWidget {
                                 },
                               ),
                             ),
-                            SizedBox(height: 8),
+                            // SizedBox(height: 8),
+                            if (offerbanners10.isNotEmpty) SizedBox(height: 8),
+                            if (offerbanners10.isNotEmpty)
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child: Column(
+                                  spacing: 15,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '10% Off on All Your Favorites',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 152,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: offerbanners10.length,
+                                        itemBuilder: (context, index) {
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return BannerScreen(
+                                                      bannerId:
+                                                          offerbanners10[index]
+                                                              .id ??
+                                                          "",
+                                                    );
+                                                  },
+                                                ),
+                                              ).then((value) {
+                                                if (!context.mounted) return;
+                                                context.read<HomeBloc>().add(
+                                                  GetCartCountEvent(
+                                                    userId: userId,
+                                                  ),
+                                                );
+                                                // context
+                                                //     .read<CounterCubit>()
+                                                //     .decrement(cartCount);
+                                                context
+                                                    .read<CounterCubit>()
+                                                    .increment(cartCount);
+                                                noOfIteminCart = cartCount;
+                                              });
+                                              debugPrint(
+                                                dailybanners[index].id,
+                                              );
+
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) {
+                                              //       return BannerScreen(
+                                              //         bannerId:
+                                              //             offerbanners10[index]
+                                              //                 .id ??
+                                              //             "",
+                                              //       );
+                                              //     },
+                                              //   ),
+                                              // ).then((value) {
+                                              //   if (!context.mounted) return;
+                                              //   context.read<HomeBloc>().add(
+                                              //     GetCartCountEvent(
+                                              //       userId: userId,
+                                              //     ),
+                                              //   );
+                                              //   // context
+                                              //   //     .read<CounterCubit>()
+                                              //   //     .decrement(cartCount);
+                                              //   context
+                                              //       .read<CounterCubit>()
+                                              //       .increment(cartCount);
+                                              //   noOfIteminCart = cartCount;
+                                              // });
+                                              debugPrint(
+                                                offerbanners10[index].id,
+                                              );
+                                              //  Navigator.pushNamed(context, '/banner');
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                right: 12,
+                                              ),
+                                              child: Container(
+                                                width: 126,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  child: ImageNetwork(
+                                                    url:
+                                                        offerbanners10[index]
+                                                            .imageUrl ??
+                                                        "",
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            SizedBox(height: 10),
+
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -1036,13 +1167,13 @@ class HomeWidgetScreen extends StatelessWidget {
                                                               BoxShadow(
                                                                 color: appColor
                                                                     .withAlpha(
-                                                                      150,
+                                                                      120,
                                                                     ),
-                                                                blurRadius: 1,
+                                                                blurRadius: 3,
                                                                 offset:
                                                                     const Offset(
                                                                       0,
-                                                                      0,
+                                                                      1,
                                                                     ),
                                                               ),
                                                             ],
@@ -1107,7 +1238,7 @@ class HomeWidgetScreen extends StatelessWidget {
                             //  const SizedBox(height: 26),
                             // const CategoryGrid(),
                             //  const SizedBox(height: 27),
-                            if (offerbanners.isNotEmpty)
+                            if (dealsbanners.isNotEmpty)
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -1115,7 +1246,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder: (context) {
                                         return BannerScreen(
-                                          bannerId: offerbanners[0].id ?? "",
+                                          bannerId: dealsbanners[0].id ?? "",
                                         );
                                       },
                                     ),
@@ -1132,15 +1263,110 @@ class HomeWidgetScreen extends StatelessWidget {
                                     );
                                     noOfIteminCart = cartCount;
                                   });
-                                  debugPrint(offerbanners[0].id ?? "");
+                                  debugPrint(dealsbanners[0].id ?? "");
                                 },
                                 child: ImageNetwork(
-                                  url: offerbanners[0].imageUrl ?? "",
+                                  url: dealsbanners[0].imageUrl ?? "",
                                   width: double.infinity,
                                   fit: BoxFit.contain,
                                 ),
                               ),
-                            const SizedBox(height: 17),
+                            const SizedBox(height: 8),
+                            if (offerbanners.isNotEmpty)
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child: SizedBox(
+                                  height: 170,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: offerbanners.length,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) {
+                                                return BannerScreen(
+                                                  bannerId:
+                                                      offerbanners[index].id ??
+                                                      "",
+                                                );
+                                              },
+                                            ),
+                                          ).then((value) {
+                                            if (!context.mounted) return;
+                                            context.read<HomeBloc>().add(
+                                              GetCartCountEvent(userId: userId),
+                                            );
+                                            // context
+                                            //     .read<CounterCubit>()
+                                            //     .decrement(cartCount);
+                                            context
+                                                .read<CounterCubit>()
+                                                .increment(cartCount);
+                                            noOfIteminCart = cartCount;
+                                          });
+
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) {
+                                          //       return BannerScreen(
+                                          //         bannerId:
+                                          //             offerbanners10[index]
+                                          //                 .id ??
+                                          //             "",
+                                          //       );
+                                          //     },
+                                          //   ),
+                                          // ).then((value) {
+                                          //   if (!context.mounted) return;
+                                          //   context.read<HomeBloc>().add(
+                                          //     GetCartCountEvent(
+                                          //       userId: userId,
+                                          //     ),
+                                          //   );
+                                          //   // context
+                                          //   //     .read<CounterCubit>()
+                                          //   //     .decrement(cartCount);
+                                          //   context
+                                          //       .read<CounterCubit>()
+                                          //       .increment(cartCount);
+                                          //   noOfIteminCart = cartCount;
+                                          // });
+                                          debugPrint(offerbanners[index].id);
+                                          //  Navigator.pushNamed(context, '/banner');
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 12,
+                                          ),
+                                          child: Container(
+                                            width: 150,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: ImageNetwork(
+                                                url:
+                                                    offerbanners[index]
+                                                        .imageUrl ??
+                                                    "",
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            SizedBox(height: 10),
 
                             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             if (dynamicProducts.data != null)
