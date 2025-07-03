@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenService {
@@ -44,6 +45,12 @@ class TokenService {
       encrypted,
       iv: IV.fromUtf8('1a2d3f2a6b8c9e2d'),
     );
+  }
+  
+  static Future<bool> isExpired() async{
+    var token = await getToken();
+    if (token == null) return true;
+    return JwtDecoder.isExpired(token);
   }
 
   static Future<void> deleteToken() async {
