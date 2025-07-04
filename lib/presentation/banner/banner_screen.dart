@@ -92,7 +92,7 @@ class BannerScreen extends StatelessWidget {
                                       color: whitecolor,
                                       borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
-                                        color: Colors.green,
+                                        color: appColor.withAlpha(120),
                                         width: 0.5,
                                       ),
                                     ),
@@ -1111,10 +1111,7 @@ class BannerScreen extends StatelessWidget {
                                                             TextAlign.center,
                                                         style:
                                                             GoogleFonts.poppins(
-                                                              color:
-                                                                  const Color(
-                                                                    0xFF326A32,
-                                                                  ),
+                                                              color: appColor,
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight

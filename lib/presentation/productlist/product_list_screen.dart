@@ -422,7 +422,7 @@ class ProductListMenuScreen extends StatelessWidget {
                                       color: whitecolor,
                                       borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
-                                        color: Colors.green,
+                                        color: appColor.withAlpha(120),
                                         width: 0.5,
                                       ),
                                     ),
@@ -552,9 +552,7 @@ class ProductListMenuScreen extends StatelessWidget {
                                                                 .cartQuantity ==
                                                             0
                                                         ? whitecolor
-                                                        : const Color(
-                                                            0xFF326A32,
-                                                          ),
+                                                        : appColor,
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                           20,
@@ -594,7 +592,7 @@ class ProductListMenuScreen extends StatelessWidget {
                                                               .cartQuantity ==
                                                           0
                                                       ? whitecolor
-                                                      : const Color(0xFF326A32),
+                                                      : appColor,
                                                   borderRadius:
                                                       BorderRadius.circular(20),
                                                   border: Border.all(
@@ -679,9 +677,7 @@ class ProductListMenuScreen extends StatelessWidget {
                                                         style:
                                                             GoogleFonts.poppins(
                                                               color:
-                                                                  const Color(
-                                                                    0xFF326A32,
-                                                                  ),
+                                                                  appColor,
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight
@@ -1963,9 +1959,7 @@ class ProductListMenuScreen extends StatelessWidget {
                                                               vertical: 1,
                                                             ),
                                                         decoration: BoxDecoration(
-                                                          color: const Color(
-                                                            0xFF326A32,
-                                                          ),
+                                                          color: appColor,
                                                           borderRadius:
                                                               BorderRadius.circular(
                                                                 20,
@@ -2032,9 +2026,7 @@ class ProductListMenuScreen extends StatelessWidget {
                                                                     TextAlign
                                                                         .center,
                                                                 style: GoogleFonts.poppins(
-                                                                  color: const Color(
-                                                                    0xFF326A32,
-                                                                  ),
+                                                                  color: appColor,
                                                                   fontSize: 14,
                                                                   fontWeight:
                                                                       FontWeight

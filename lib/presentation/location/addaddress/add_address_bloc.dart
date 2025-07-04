@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sodakkuapp/apiservice/secure_storage/secure_storage.dart';
 import 'package:sodakkuapp/model/addaddress/add_address_save_response_mode.dart';
 import 'package:sodakkuapp/presentation/location/addaddress/add_address_event.dart';
 import 'package:sodakkuapp/presentation/location/addaddress/add_address_state.dart';
@@ -72,7 +73,7 @@ class AddAddressBloc extends Bloc<AddAddressEvent, AddAddressState> {
     try {
       String url = "$updateAddressUrl/${event.id}";
       debugPrint(url);
-      var headers = {'Content-Type': 'application/json'};
+      var headers = {'Content-Type': 'application/json' , "Authorization":"Bearer ${TokenService.getToken()}"};
       var request = http.Request('PUT', Uri.parse(url));
       request.body = json.encode({
         "label": event.label,

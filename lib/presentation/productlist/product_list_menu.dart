@@ -133,7 +133,7 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                       color: whitecolor,
                                       borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
-                                        color: Colors.green,
+                                        color: appColor.withAlpha(120),
                                         width: 0.5,
                                       ),
                                     ),
@@ -266,9 +266,7 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                                 .userCartQuantity ==
                                                             0
                                                         ? whitecolor
-                                                        : const Color(
-                                                            0xFF326A32,
-                                                          ),
+                                                        : appColor,
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                           20,
@@ -392,10 +390,7 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                             TextAlign.center,
                                                         style:
                                                             GoogleFonts.poppins(
-                                                              color:
-                                                                  const Color(
-                                                                    0xFF326A32,
-                                                                  ),
+                                                              color: appColor,
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight
@@ -1530,9 +1525,9 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                                 ),
                                                             decoration: BoxDecoration(
                                                               border: Border.all(
-                                                                color:
-                                                                    const Color(
-                                                                      0xFFE0ECE0,
+                                                                color: appColor
+                                                                    .withAlpha(
+                                                                      120,
                                                                     ),
                                                               ),
                                                               borderRadius:
@@ -1602,9 +1597,9 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                               ),
                                                           decoration: BoxDecoration(
                                                             border: Border.all(
-                                                              color:
-                                                                  const Color(
-                                                                    0xFFE0ECE0,
+                                                              color: appColor
+                                                                  .withAlpha(
+                                                                    120,
                                                                   ),
                                                             ),
                                                             borderRadius:

@@ -212,9 +212,7 @@ class SearchScreen extends StatelessWidget {
                                                                 .cartQuantity ==
                                                             0
                                                         ? whitecolor
-                                                        : const Color(
-                                                            0xFF326A32,
-                                                          ),
+                                                        : appColor,
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                           20,
@@ -335,9 +333,7 @@ class SearchScreen extends StatelessWidget {
                                                         style:
                                                             GoogleFonts.poppins(
                                                               color:
-                                                                  const Color(
-                                                                    0xFF326A32,
-                                                                  ),
+                                                                  appColor,
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight

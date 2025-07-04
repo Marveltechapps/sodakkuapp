@@ -51,7 +51,10 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
   ) async {
     emit(AddressLoadingState());
     try {
-      var headers = {'Content-Type': 'application/json'};
+      var headers = {
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer ${await TokenService.getToken()}",
+      };
 
       String url = "$deleteAddressUrl${event.id}";
 

@@ -344,9 +344,12 @@ class HomeWidgetScreen extends StatelessWidget {
           } else if (state is ItemRemovedToCartState) {
             context.read<CounterCubit>().decrement(1);
           } else if (state is HomeErrorState) {
+            if(state.message == "Failed to fetch data"){}else{
+
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
+            }
           }
         },
         builder: (context, state) {
@@ -504,6 +507,10 @@ class HomeWidgetScreen extends StatelessWidget {
                                       profilesvg,
                                       height: 24,
                                       width: 24,
+                                      colorFilter: ColorFilter.mode(
+                                        appColor,
+                                        BlendMode.srcIn,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -746,7 +753,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                           2.5,
                                       autoPlay: true,
                                       autoPlayInterval: const Duration(
-                                        seconds: 3,
+                                        seconds: 5,
                                       ),
                                       autoPlayAnimationDuration: const Duration(
                                         milliseconds: 800,
@@ -1157,7 +1164,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                                               0.65, // Dynamically adjust height
                                                           decoration: BoxDecoration(
                                                             color: const Color(
-                                                              0xFFFEFDF3,
+                                                              0xFFf6f6f6,
                                                             ),
                                                             borderRadius:
                                                                 BorderRadius.circular(
@@ -1169,11 +1176,11 @@ class HomeWidgetScreen extends StatelessWidget {
                                                                     .withAlpha(
                                                                       120,
                                                                     ),
-                                                                blurRadius: 3,
+                                                                blurRadius: 0,
                                                                 offset:
                                                                     const Offset(
                                                                       0,
-                                                                      1,
+                                                                      0,
                                                                     ),
                                                               ),
                                                             ],

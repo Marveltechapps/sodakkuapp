@@ -108,7 +108,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                       color: whitecolor,
                                       borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
-                                        color: Colors.green,
+                                        color: appColor.withAlpha(120),
                                         width: 0.5,
                                       ),
                                     ),
@@ -2144,10 +2144,8 @@ class ProductDetailsScreen extends StatelessWidget {
                                                                   horizontal: 8,
                                                                   vertical: 4,
                                                                 ),
-                                                            decoration: const BoxDecoration(
-                                                              color: Color(
-                                                                0xFF034703,
-                                                              ),
+                                                            decoration: BoxDecoration(
+                                                              color: appColor,
                                                               borderRadius:
                                                                   BorderRadius.only(
                                                                     topLeft:
@@ -2241,9 +2239,10 @@ class ProductDetailsScreen extends StatelessWidget {
                                                                     ),
                                                                 decoration: BoxDecoration(
                                                                   border: Border.all(
-                                                                    color: const Color(
-                                                                      0xFFE0ECE0,
-                                                                    ),
+                                                                    color: appColor
+                                                                        .withAlpha(
+                                                                          120,
+                                                                        ),
                                                                   ),
                                                                   borderRadius:
                                                                       BorderRadius.circular(

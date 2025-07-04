@@ -148,7 +148,7 @@ class CategoriesScreen extends StatelessWidget {
                                                       0.65, // Dynamically adjust height
                                                   decoration: BoxDecoration(
                                                     color: const Color(
-                                                      0xFFFEFDF3,
+                                                      0xFFf6f6f6,
                                                     ),
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -158,10 +158,10 @@ class CategoriesScreen extends StatelessWidget {
                                                       BoxShadow(
                                                         color: appColor
                                                             .withAlpha(120),
-                                                        blurRadius: 3,
+                                                        blurRadius: 0,
                                                         offset: const Offset(
                                                           0,
-                                                          1,
+                                                          0,
                                                         ),
                                                       ),
                                                     ],
