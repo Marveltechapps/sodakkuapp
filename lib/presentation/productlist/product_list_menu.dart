@@ -1224,6 +1224,7 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                             url: subCatList[i].imageUrl ?? "",
                                             width: 53,
                                             height: 53,
+                                            fit: BoxFit.fitWidth,
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
