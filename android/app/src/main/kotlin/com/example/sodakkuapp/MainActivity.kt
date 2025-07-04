@@ -1,4 +1,4 @@
-package com.sodakku.appapp
+package com.sodakku.app
 
 import io.flutter.embedding.android.FlutterActivity
 
