@@ -469,7 +469,7 @@ class CartScreen extends StatelessWidget {
                                                           .imageUrl ==
                                                       ""
                                                   ? SizedBox()
-                                                  : ImageNetwork(
+                                                  : NetworkImageWidget(
                                                       url:
                                                           cartResponse
                                                               .items![index]
@@ -1136,7 +1136,7 @@ class CartScreen extends StatelessWidget {
                                                                                 MainAxisSize.min, // Prevent unnecessary height
                                                                             children: [
                                                                               Text(
-                                                                                "Selorg has no role to play in the taxes and charges being levied by the government",
+                                                                                "Sodakku has no role to play in the taxes and charges being levied by the government",
                                                                                 style: TextStyle(
                                                                                   fontSize: 12,
                                                                                   color: Colors.black,
@@ -1651,7 +1651,7 @@ class CartScreen extends StatelessWidget {
                                                         },
                                                       ),
                                                     );
-                                                debugPrint(address[1]);
+                                                debugPrint(address[1] ?? "");
                                                 if (!context.mounted) return;
                                                 context.read<CartBloc>().add(
                                                   FetchAddressEvent(

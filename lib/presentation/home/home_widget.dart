@@ -344,11 +344,11 @@ class HomeWidgetScreen extends StatelessWidget {
           } else if (state is ItemRemovedToCartState) {
             context.read<CounterCubit>().decrement(1);
           } else if (state is HomeErrorState) {
-            if(state.message == "Failed to fetch data"){}else{
-
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            if (state.message == "Failed to fetch data") {
+            } else {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
             }
           }
         },
@@ -808,7 +808,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(
                                               10,
                                             ),
-                                            child: ImageNetwork(
+                                            child: NetworkImageWidget(
                                               url:
                                                   festivalbanners[index]
                                                       .imageUrl ??
@@ -869,7 +869,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                           borderRadius: BorderRadius.circular(
                                             8,
                                           ),
-                                          child: ImageNetwork(
+                                          child: NetworkImageWidget(
                                             url:
                                                 dailybanners[index].imageUrl ??
                                                 "",
@@ -989,7 +989,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(8),
-                                                  child: ImageNetwork(
+                                                  child: NetworkImageWidget(
                                                     url:
                                                         offerbanners10[index]
                                                             .imageUrl ??
@@ -1191,7 +1191,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                                                   const EdgeInsets.all(
                                                                     8.0,
                                                                   ),
-                                                              child: ImageNetwork(
+                                                              child: NetworkImageWidget(
                                                                 url:
                                                                     data.imageUrl ??
                                                                     "",
@@ -1272,7 +1272,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                   });
                                   debugPrint(dealsbanners[0].id ?? "");
                                 },
-                                child: ImageNetwork(
+                                child: NetworkImageWidget(
                                   url: dealsbanners[0].imageUrl ?? "",
                                   width: double.infinity,
                                   fit: BoxFit.contain,
@@ -1358,7 +1358,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(8),
-                                              child: ImageNetwork(
+                                              child: NetworkImageWidget(
                                                 url:
                                                     offerbanners[index]
                                                         .imageUrl ??
@@ -1475,7 +1475,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                                                     const EdgeInsets.only(
                                                                       top: 12.0,
                                                                     ),
-                                                                child: ImageNetwork(
+                                                                child: NetworkImageWidget(
                                                                   url:
                                                                       product[i]
                                                                           .variants![0]

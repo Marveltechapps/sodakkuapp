@@ -1384,7 +1384,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Center(
-                                        child: ImageNetwork(
+                                        child: NetworkImageWidget(
                                           url:
                                               productDetailResponse
                                                   .data!
@@ -2122,7 +2122,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                                                 const EdgeInsets.only(
                                                                   top: 12.0,
                                                                 ),
-                                                            child: ImageNetwork(
+                                                            child: NetworkImageWidget(
                                                               url:
                                                                   similarProductResponse
                                                                       .data![i]

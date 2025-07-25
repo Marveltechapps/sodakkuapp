@@ -676,8 +676,7 @@ class ProductListMenuScreen extends StatelessWidget {
                                                             TextAlign.center,
                                                         style:
                                                             GoogleFonts.poppins(
-                                                              color:
-                                                                  appColor,
+                                                              color: appColor,
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight
@@ -1490,7 +1489,7 @@ class ProductListMenuScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          ImageNetwork(
+                                          NetworkImageWidget(
                                             url: subCatList[i].imageUrl ?? "",
                                             width: 53,
                                             height: 53,
@@ -1658,7 +1657,7 @@ class ProductListMenuScreen extends StatelessWidget {
                                                           const EdgeInsets.only(
                                                             top: 12.0,
                                                           ),
-                                                      child: ImageNetwork(
+                                                      child: NetworkImageWidget(
                                                         url:
                                                             selectedProductIndexes ==
                                                                 index
@@ -2026,7 +2025,8 @@ class ProductListMenuScreen extends StatelessWidget {
                                                                     TextAlign
                                                                         .center,
                                                                 style: GoogleFonts.poppins(
-                                                                  color: appColor,
+                                                                  color:
+                                                                      appColor,
                                                                   fontSize: 14,
                                                                   fontWeight:
                                                                       FontWeight

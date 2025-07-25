@@ -27,7 +27,12 @@ class CartItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 9),
       child: Row(
         children: [
-          ImageNetwork(url: image, width: 65, height: 65, fit: BoxFit.cover),
+          NetworkImageWidget(
+            url: image,
+            width: 65,
+            height: 65,
+            fit: BoxFit.cover,
+          ),
           const SizedBox(width: 19),
           Expanded(
             child: Column(

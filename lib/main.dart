@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sodakkuapp/apiservice/secure_storage/secure_storage.dart';
@@ -28,6 +30,7 @@ void main() {
     debugPrint('💥 Flutter error: ${details.exception}');
     debugPrint('📌 Stack trace: ${details.stack}');
   };
+  HttpOverrides.global = MyHttpOverrides(); // 👈 Add this line
   runApp(
     ShowCaseWidget(
       builder: (context) {
@@ -35,6 +38,15 @@ void main() {
       },
     ),
   );
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -45,19 +57,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-   Future<void> getProps() async {
-     final isExpired = await TokenService.isExpired();
-      if(isExpired && await TokenService.getToken() != null){
-        await TokenService.deleteToken();
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('phone', '');
-        await prefs.setString('userid', '');
-        await prefs.setBool('isLoggedIn', false);
-        isLoggedInvalue = false;
-        phoneNumber = '';
-        userId = '';
-        RestartWidget.restartApp(context);
-      }
+  Future<void> getProps() async {
+    final isExpired = await TokenService.isExpired();
+    if (isExpired && await TokenService.getToken() != null) {
+      await TokenService.deleteToken();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('phone', '');
+      await prefs.setString('userid', '');
+      await prefs.setBool('isLoggedIn', false);
+      isLoggedInvalue = false;
+      phoneNumber = '';
+      userId = '';
+      RestartWidget.restartApp(context);
+    }
   }
 
   @override
@@ -65,13 +77,14 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     getProps();
   }
+
   @override
   Widget build(BuildContext context) {
     return RestartWidget(
       child: MaterialApp(
         title: 'Sodakku',
         debugShowCheckedModeBanner: false,
-      
+
         // ✅ Locks text and display scale
         builder: (context, child) {
           final mediaQuery = MediaQuery.of(context);
@@ -80,7 +93,7 @@ class _MyAppState extends State<MyApp> {
             child: child!,
           );
         },
-      
+
         theme: ThemeData(
           useMaterial3: false,
           scaffoldBackgroundColor: const Color(0xFFFAFAFA),
@@ -136,7 +149,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ),
-      
+
         initialRoute: '/',
         routes: {
           '/login': (context) => LoginScreen(),
@@ -157,7 +170,7 @@ class _MyAppState extends State<MyApp> {
           '/notifications': (context) => NotificationsScreen(),
           '/paymentManagementScreen': (context) => PaymentManagementScreen(),
         },
-      
+
         home: SplashScreen(),
       ),
     );

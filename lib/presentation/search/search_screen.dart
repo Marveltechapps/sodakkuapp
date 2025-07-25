@@ -332,8 +332,7 @@ class SearchScreen extends StatelessWidget {
                                                             TextAlign.center,
                                                         style:
                                                             GoogleFonts.poppins(
-                                                              color:
-                                                                  appColor,
+                                                              color: appColor,
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight
@@ -798,13 +797,14 @@ class SearchScreen extends StatelessWidget {
                                         ),
                                       );
                                     },
-                                    leading: ImageNetwork(
+                                    leading: NetworkImageWidget(
                                       url:
                                           searchResponse
                                               .data![index]
                                               .variants![0]
                                               .imageUrl ??
                                           "",
+                                      fit: BoxFit.fitHeight,
                                       height: 30,
                                       width: 30,
                                     ),

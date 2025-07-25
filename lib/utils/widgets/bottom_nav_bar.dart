@@ -19,13 +19,13 @@ class CustomBottomNavBar extends StatelessWidget {
             // Home Button
             GestureDetector(
               onTap: () {
-                debugPrint("Selorg");
+                debugPrint("Sodakku");
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.home, color: Colors.green, size: 30),
-                  Text("Selorg",
+                  Text("Home",
                       style: TextStyle(
                           color: Colors.green, fontWeight: FontWeight.bold)),
                 ],

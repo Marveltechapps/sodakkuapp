@@ -24,7 +24,7 @@ class CartBottomNavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem('Selorg', Icons.home_outlined, true),
+          _buildNavItem('Home', Icons.home_outlined, true),
           _buildNavItem('Categories', Icons.grid_view, false),
           _buildNavItem('Cart', Icons.shopping_cart_outlined, false),
         ],

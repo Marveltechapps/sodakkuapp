@@ -172,7 +172,7 @@ class CategoriesScreen extends StatelessWidget {
                                                           const EdgeInsets.all(
                                                             8.0,
                                                           ),
-                                                      child: ImageNetwork(
+                                                      child: NetworkImageWidget(
                                                         url:
                                                             data.imageUrl ?? "",
                                                         fit: BoxFit.contain,

@@ -1220,11 +1220,11 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          ImageNetwork(
+                                          NetworkImageWidget(
                                             url: subCatList[i].imageUrl ?? "",
                                             width: 53,
                                             height: 53,
-                                            fit: BoxFit.fitWidth,
+                                            fit: BoxFit.fitHeight,
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
@@ -1390,7 +1390,7 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                           const EdgeInsets.only(
                                                             top: 12.0,
                                                           ),
-                                                      child: ImageNetwork(
+                                                      child: NetworkImageWidget(
                                                         url:
                                                             selectedProductIndexes ==
                                                                 index

@@ -89,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    ImageNetwork(
+                                    NetworkImageWidget(
                                       url:
                                           'https://flagcdn.com/w40/in.png', // Indian Flag
                                       width: 24,

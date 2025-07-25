@@ -766,7 +766,7 @@ class BannerScreen extends StatelessWidget {
                                               padding: const EdgeInsets.only(
                                                 top: 12.0,
                                               ),
-                                              child: ImageNetwork(
+                                              child: NetworkImageWidget(
                                                 url:
                                                     selectedProductIndex ==
                                                         index

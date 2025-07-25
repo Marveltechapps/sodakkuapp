@@ -239,12 +239,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   ) async {
     emit(CartLoadingState());
     try {
+      String? token = await TokenService.getToken();
       String url = "$getAddressUrl${event.userId}";
       debugPrint(url);
       final client = await createPinnedHttpClient();
       final response = await client.get(
         Uri.parse(url),
-        headers: {"Authorization": "Bearer ${TokenService.getToken()}"},
+        headers: {"Authorization": "Bearer $token"},
       );
       if (response.statusCode == 200) {
         var getSavedAddressResponse = getSavedAddressResponseFromJson(
@@ -257,6 +258,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           ),
         );
       } else {
+        debugPrint("REASON - ${response.headers}");
+
+        String? name = await TokenService.getToken();
+        debugPrint("TOKEN - $name");
         emit(CartErrorState(errormsg: 'Failed to fetch data'));
       }
     } catch (e) {

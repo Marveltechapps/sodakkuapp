@@ -51,12 +51,19 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
   ) async {
     emit(AddressLoadingState());
     try {
+      String? token = await TokenService.getToken();
+      if (token == null) {
+        emit(AddressErrorState(errorMsg: "Authorization token not found"));
+        return;
+      }
+
       var headers = {
-        'Content-Type': 'application/json',
-        "Authorization": "Bearer ${await TokenService.getToken()}",
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
       };
 
       String url = "$deleteAddressUrl${event.id}";
+      debugPrint("Delete URL: $url");
 
       var request = http.Request('DELETE', Uri.parse(url));
       request.body = json.encode({
@@ -76,6 +83,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         },
       });
       request.headers.addAll(headers);
+      debugPrint("Request Body: ${request.body}");
 
       http.StreamedResponse response = await request.send();
 
@@ -88,9 +96,17 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
           ),
         );
       } else {
-        emit(AddressErrorState(errorMsg: response.reasonPhrase ?? ""));
+        var error = await response.stream.bytesToString();
+        emit(
+          AddressErrorState(
+            errorMsg: error.isNotEmpty
+                ? error
+                : response.reasonPhrase ?? "Unknown error",
+          ),
+        );
       }
     } catch (e) {
+      debugPrint("Delete error: $e");
       emit(AddressErrorState(errorMsg: e.toString()));
     }
   }

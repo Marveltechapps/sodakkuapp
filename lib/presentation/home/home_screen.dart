@@ -188,7 +188,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 // Icon(Icons.home, color: Colors.green, size: 30),
                                 Text(
-                                  "Selorg",
+                                  "Home",
                                   style: TextStyle(
                                     color: appColor,
                                     fontSize: 14,
