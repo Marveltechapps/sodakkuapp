@@ -7,7 +7,6 @@ import 'package:sodakkuapp/model/settings/privacy_policy_response_model.dart';
 import 'package:sodakkuapp/presentation/settings/general_info/general_info_bloc.dart';
 import 'package:sodakkuapp/presentation/settings/general_info/general_info_event.dart';
 import 'package:sodakkuapp/presentation/settings/general_info/general_info_state.dart';
-import 'package:sodakkuapp/presentation/settings/general_info/utils/mobile_html_viewer.dart';
 import 'package:sodakkuapp/utils/constant.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -129,10 +128,14 @@ class PrivacyPolicyScreen extends StatelessWidget {
                                     },
                                   )
                                 : Text('loading...'))
-                          : MobileHtmlView(
-                              assetPath:
-                                  privacyPolicyResponse.content ??
-                                  "<html><head></head><body><p>Privacy Policy Not loaded Properly</p></html>",
+                          : Html(
+                              data: privacyPolicyResponse.content ?? "",
+                              style: {
+                                "*": Style(
+                                  color: Colors
+                                      .black, // Set all text color to black
+                                ),
+                              },
                             ),
                     ),
                   ],

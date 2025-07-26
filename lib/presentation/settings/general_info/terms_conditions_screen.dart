@@ -7,7 +7,6 @@ import 'package:sodakkuapp/model/settings/terms_and_condition_response_model.dar
 import 'package:sodakkuapp/presentation/settings/general_info/general_info_bloc.dart';
 import 'package:sodakkuapp/presentation/settings/general_info/general_info_event.dart';
 import 'package:sodakkuapp/presentation/settings/general_info/general_info_state.dart';
-import 'package:sodakkuapp/presentation/settings/general_info/utils/mobile_html_viewer.dart';
 import 'package:sodakkuapp/utils/constant.dart';
 
 class TermsConditionsScreen extends StatelessWidget {
@@ -17,22 +16,33 @@ class TermsConditionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final staticAnchorKey = GlobalKey();
     return BlocProvider(
       create: (context) => GeneralInfoBloc(),
       child: BlocConsumer<GeneralInfoBloc, GeneralInfoState>(
         listener: (context, state) {
           if (state is TermsAndConditionSuccessState) {
             termsAndConditionResponse = state.termsAndConditionResponse;
-            termsAndConditionResponse[0].content = termsAndConditionResponse[0]
-                .content!
-                .replaceAll(r'\n', '');
+
+            if (termsAndConditionResponse.isNotEmpty &&
+                termsAndConditionResponse[0].content != null) {
+              // Sanitize content: remove \n and <script> tags
+              String sanitized = termsAndConditionResponse[0].content!
+                  .replaceAll(r'\n', '')
+                  .replaceAll(
+                    RegExp(
+                      r'<script[^>]*>[\s\S]*?<\/script>',
+                      caseSensitive: false,
+                    ),
+                    '',
+                  );
+
+              termsAndConditionResponse[0].content = sanitized;
+            }
           }
         },
         builder: (context, state) {
           if (state is GeneralInfoInitialState) {
-            //  termsAndConditionResponse = TermsAndConditionResponse();
-            context.read<GeneralInfoBloc>().add((GetTermsAndConditionEvent()));
+            context.read<GeneralInfoBloc>().add(GetTermsAndConditionEvent());
           }
           return OverlayLoaderWithAppIcon(
             appIconSize: 60,
@@ -45,9 +55,7 @@ class TermsConditionsScreen extends StatelessWidget {
                 backgroundColor: headerColor,
                 surfaceTintColor: Colors.transparent,
                 leading: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () => Navigator.pop(context),
                   icon: Icon(
                     Icons.arrow_back_ios_new,
                     color: headerComponentsColor,
@@ -60,85 +68,67 @@ class TermsConditionsScreen extends StatelessWidget {
                   style: TextStyle(color: headerComponentsColor),
                 ),
               ),
-              body: SingleChildScrollView(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      constraints: BoxConstraints(maxWidth: 1280),
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: kIsWeb
-                          ? (termsAndConditionResponse.isNotEmpty
-                                ? Html(
-                                    shrinkWrap: true,
-                                    key: staticAnchorKey,
-                                    data:
-                                        termsAndConditionResponse[0].content ??
-                                        "<html><head></head><body><p>Terms & Conditions Not loaded Properly</p></html>",
-                                    style: {
-                                      'p': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
+              body: termsAndConditionResponse.isEmpty
+                  ? SizedBox()
+                  : SingleChildScrollView(
+                      child: Center(
+                        child: Container(
+                          constraints: const BoxConstraints(maxWidth: 1280),
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 20,
+                          ),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: 0,
+                                  maxHeight: constraints.maxHeight,
+                                ),
+                                child: kIsWeb
+                                    ? Html(
+                                        data: termsAndConditionResponse[0]
+                                            .content!,
+                                        style: {
+                                          'body': Style(
+                                            padding: HtmlPaddings.zero,
+                                            margin: Margins.zero,
+                                            color: Colors.black,
+                                          ),
+                                          'h1': Style(color: Colors.black),
+                                          'h2': Style(color: Colors.black),
+                                          'h3': Style(color: Colors.black),
+                                          'h4': Style(color: Colors.black),
+                                          'h5': Style(color: Colors.black),
+                                          'h6': Style(color: Colors.black),
+                                          'p': Style(
+                                            fontSize: FontSize.medium,
+                                            color: Colors.black,
+                                          ),
+                                          'span': Style(color: Colors.black),
+                                          'ul': Style(color: Colors.black),
+                                          'li': Style(color: Colors.black),
+                                        },
+                                      )
+                                    : Html(
+                                        data:
+                                            termsAndConditionResponse[0]
+                                                .content ??
+                                            "",
+                                        style: {
+                                          "*": Style(
+                                            color: Colors
+                                                .black, // Set all text color to black
+                                          ),
+                                        },
                                       ),
-                                      'h1': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
-                                      ),
-                                      'h2': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
-                                      ),
-                                      'h3': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
-                                      ),
-                                      'h4': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
-                                      ),
-                                      'h5': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
-                                      ),
-                                      'h6': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
-                                      ),
-                                      'span': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
-                                      ),
-                                      'ul': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
-                                      ),
-                                      'li': Style(
-                                        // maxLines: 2,
-                                        textOverflow: TextOverflow.clip,
-                                        color: Colors.black,
-                                      ),
-                                    },
-                                  )
-                                : Text('loading...'))
-                          : MobileHtmlView(
-                              assetPath:
-                                  termsAndConditionResponse[0].content ??
-                                  "<html><head></head><body><p>Terms & Conditions Not loaded Properly</p></html>",
-                            ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-              ),
             ),
           );
         },
