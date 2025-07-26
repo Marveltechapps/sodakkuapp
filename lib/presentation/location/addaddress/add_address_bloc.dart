@@ -73,7 +73,12 @@ class AddAddressBloc extends Bloc<AddAddressEvent, AddAddressState> {
     try {
       String url = "$updateAddressUrl/${event.id}";
       debugPrint(url);
-      var headers = {'Content-Type': 'application/json' , "Authorization":"Bearer ${TokenService.getToken()}"};
+      String? token = await TokenService.getToken();
+      debugPrint(token);
+      var headers = {
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer $token",
+      };
       var request = http.Request('PUT', Uri.parse(url));
       request.body = json.encode({
         "label": event.label,

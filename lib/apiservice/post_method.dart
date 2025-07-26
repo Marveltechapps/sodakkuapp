@@ -21,6 +21,8 @@ class ApiService {
     debugPrint(api);
     Response? res;
     try {
+      String? token = await TokenService.getToken();
+      debugPrint(token);
       final client = await createPinnedHttpClient();
       var response = await client /* .Client() */ .post(
         url,
@@ -28,7 +30,7 @@ class ApiService {
         headers: {
           "Accept": "application/json",
           "Content-type": "application/json",
-          "Authorization": "Bearer ${await TokenService.getToken()}",
+          "Authorization": "Bearer $token",
           //"checksum": dataEncryption(object, encryptionKey),
           // "userid": dataEncryption(userId, encryptionKey),
           // "password": dataEncryption(password, encryptionKey),

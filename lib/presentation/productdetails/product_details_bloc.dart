@@ -161,10 +161,12 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     try {
       String url = "$cartUrl${event.userId}";
       debugPrint(url);
+      String? token = await TokenService.getToken();
+      debugPrint(token);
       final client = await createPinnedHttpClient();
       final response = await client.get(
         Uri.parse(url),
-        headers: {"Authorization": "Bearer ${await TokenService.getToken()}"},
+        headers: {"Authorization": "Bearer $token"},
       );
       if (response.statusCode == 200) {
         var cartResponse = cartResponseFromJson(response.body);

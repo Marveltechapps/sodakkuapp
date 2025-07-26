@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:sodakkuapp/apiservice/secure_storage/secure_storage.dart';
 import 'package:sodakkuapp/apiservice/ssl_pinning_https.dart';
 
@@ -11,6 +12,8 @@ class ApiService {
     Map<String, String>? params,
   }) async {
     try {
+      String? token = await TokenService.getToken();
+      debugPrint(token);
       final client = await createPinnedHttpClient();
       Uri url = Uri.parse('$baseUrl/$endpoint');
 
@@ -21,7 +24,7 @@ class ApiService {
 
       var response = await client.get(
         url,
-        headers: {"Authorization": "Bearer ${await TokenService.getToken()}"},
+        headers: {"Authorization": "Bearer $token"},
       );
 
       if (response.statusCode == 200) {

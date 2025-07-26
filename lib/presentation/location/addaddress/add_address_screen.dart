@@ -274,14 +274,143 @@ class _AddAddressState extends State<AddAddress> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInputField('House No. & Floor', houseNoController, context),
+          // _buildInputField('House No. & Floor', houseNoController, context),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('House No. & Floor', style: AddAddressStyles.labelStyle),
+              const SizedBox(height: 4),
+              TextFormField(
+                controller: houseNoController,
+                cursorColor: appColor,
+                decoration: InputDecoration(
+                  hintText: 'Enter Details',
+                  hintStyle: AddAddressStyles.inputStyle,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: greyColor), // Default border
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appColor,
+                    ), // Border when focused
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appColor,
+                    ), // Border when error
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appColor,
+                    ), // Border when focused & error
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                ),
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ],
+          ),
           const SizedBox(height: 8),
-          _buildInputField('Building & Block No.', buildingController, context),
+          // _buildInputField('Building & Block No.', buildingController, context),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Building & Block No.', style: AddAddressStyles.labelStyle),
+              const SizedBox(height: 4),
+              TextFormField(
+                controller: buildingController,
+                cursorColor: appColor,
+                decoration: InputDecoration(
+                  hintText: 'Enter Details',
+                  hintStyle: AddAddressStyles.inputStyle,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: greyColor), // Default border
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appColor,
+                    ), // Border when focused
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appColor,
+                    ), // Border when error
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appColor,
+                    ), // Border when focused & error
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                ),
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ],
+          ),
           const SizedBox(height: 8),
-          _buildInputField(
-            'Landmark & Area name(Optional)',
-            landmarkController,
-            context,
+          // _buildInputField(
+          //   'Landmark & Area name(Optional)',
+          //   landmarkController,
+          //   context,
+          // ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Landmark & Area name(Optional)',
+                style: AddAddressStyles.labelStyle,
+              ),
+              const SizedBox(height: 4),
+              TextFormField(
+                controller: landmarkController,
+                cursorColor: appColor,
+                decoration: InputDecoration(
+                  hintText: 'Enter Details',
+                  hintStyle: AddAddressStyles.inputStyle,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: greyColor), // Default border
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appColor,
+                    ), // Border when focused
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appColor,
+                    ), // Border when error
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appColor,
+                    ), // Border when focused & error
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                ),
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ],
           ),
           const SizedBox(height: 25),
           _buildAddressLabels(addAddressBloc),
