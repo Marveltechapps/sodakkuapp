@@ -6,6 +6,7 @@ import 'package:sodakkuapp/presentation/location/addaddress/add_address_bloc.dar
 import 'package:sodakkuapp/presentation/location/addaddress/add_address_event.dart';
 import 'package:sodakkuapp/presentation/location/addaddress/add_address_state.dart';
 import 'package:sodakkuapp/presentation/location/yourlocation/your_location_screen.dart';
+import 'package:sodakkuapp/presentation/settings/address/address_bloc.dart';
 import 'package:sodakkuapp/presentation/widgets/success_dialog_widget.dart';
 import 'package:sodakkuapp/utils/constant.dart';
 import '../../widgets/cart/add_address_styles.dart';
@@ -97,7 +98,7 @@ class _AddAddressState extends State<AddAddress> {
                 ),
               ),
             );
-          }
+          } else if (state is AddAddressTypeingState) {}
           return Scaffold(
             backgroundColor: AddAddressStyles.backgroundColor,
             appBar: AppBar(
@@ -462,6 +463,9 @@ class _AddAddressState extends State<AddAddress> {
             ),
           ),
           style: Theme.of(context).textTheme.displayMedium,
+          onChanged: (value) {
+            context.read<AddAddressBloc>().add(TypeEvent());
+          },
         ),
       ],
     );

@@ -1,5 +1,7 @@
 abstract class AddAddressEvent {}
 
+class TypeEvent extends AddAddressEvent {}
+
 class SaveAddressEvent extends AddAddressEvent {
   final String userId;
   final String label;
@@ -13,18 +15,19 @@ class SaveAddressEvent extends AddAddressEvent {
   final String latitude;
   final String longitude;
 
-  SaveAddressEvent(
-      {required this.userId,
-      required this.label,
-      required this.houseNo,
-      required this.building,
-      required this.landMark,
-      required this.area,
-      required this.city,
-      required this.state,
-      required this.pinCode,
-      required this.latitude,
-      required this.longitude});
+  SaveAddressEvent({
+    required this.userId,
+    required this.label,
+    required this.houseNo,
+    required this.building,
+    required this.landMark,
+    required this.area,
+    required this.city,
+    required this.state,
+    required this.pinCode,
+    required this.latitude,
+    required this.longitude,
+  });
 }
 
 class UpdateAddressEvent extends AddAddressEvent {
@@ -41,19 +44,20 @@ class UpdateAddressEvent extends AddAddressEvent {
   final String latitude;
   final String longitude;
 
-  UpdateAddressEvent(
-      {required this.userId,
-      required this.id,
-      required this.label,
-      required this.houseNo,
-      required this.building,
-      required this.landMark,
-      required this.area,
-      required this.city,
-      required this.state,
-      required this.pinCode,
-      required this.latitude,
-      required this.longitude});
+  UpdateAddressEvent({
+    required this.userId,
+    required this.id,
+    required this.label,
+    required this.houseNo,
+    required this.building,
+    required this.landMark,
+    required this.area,
+    required this.city,
+    required this.state,
+    required this.pinCode,
+    required this.latitude,
+    required this.longitude,
+  });
 }
 
 class SelectLabelEvent extends AddAddressEvent {

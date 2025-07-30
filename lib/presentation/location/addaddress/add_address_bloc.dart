@@ -16,6 +16,12 @@ class AddAddressBloc extends Bloc<AddAddressEvent, AddAddressState> {
     on<SaveAddressEvent>(saveAddress);
     on<SelectLabelEvent>(selectLabelFunction);
     on<UpdateAddressEvent>(updateAddress);
+    on<TypeEvent>(typefunction);
+  }
+
+  typefunction(TypeEvent event, Emitter<AddAddressState> emit) {
+    emit(AddAddressLoadingState());
+    emit(AddAddressTypeingState());
   }
 
   selectLabelFunction(SelectLabelEvent event, Emitter<AddAddressState> emit) {

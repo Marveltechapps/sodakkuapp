@@ -229,6 +229,8 @@ class CartScreen extends StatelessWidget {
             if (cartResponse.items!.isEmpty) {
               tipAmount = "0";
               cartCount = 0;
+              isOneSelected = false;
+              isTwoSelected = false;
             } else {
               tipAmount = cartResponse.billSummary!.deliveryTip.toString();
             }
