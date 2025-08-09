@@ -7,6 +7,8 @@ import 'package:sodakkuapp/presentation/category/category_event.dart';
 import 'package:sodakkuapp/presentation/category/category_state.dart';
 import 'package:sodakkuapp/model/category/category_model.dart' as cat;
 import 'package:sodakkuapp/model/category/main_category_model.dart';
+import 'package:sodakkuapp/presentation/home/home_bloc.dart';
+import 'package:sodakkuapp/presentation/home/home_event.dart';
 import 'package:sodakkuapp/presentation/productlist/product_list_menu.dart';
 import 'package:sodakkuapp/presentation/widgets/network_image.dart';
 import 'package:sodakkuapp/utils/constant.dart';
@@ -45,172 +47,185 @@ class CategoriesScreen extends StatelessWidget {
             // context.read<CategoryBloc>().add(GetCategoryDataEvent());
             context.read<CategoryBloc>().add(GetDynamicCategoryDataEvent());
           }
-          return OverlayLoaderWithAppIcon(
-            appIconSize: 60,
-            circularProgressColor: Colors.transparent,
-            overlayBackgroundColor: Colors.black87,
-            isLoading: state is CategoryLoadingState,
-            appIcon: Image.asset(loadGif, fit: BoxFit.fill),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  spacing: 16,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Explore by Categories',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ],
-                    ),
-                    if (dynamicCategories.data != null)
-                      for (
-                        int categoryIndex = 0;
-                        categoryIndex < dynamicCategories.data!.length;
-                        categoryIndex++
-                      )
-                        Column(
-                          children: [
-                            if (dynamicCategories.data!.length > 1)
-                              Row(
-                                children: [
-                                  Text(
-                                    dynamicCategories
-                                        .data![categoryIndex]
-                                        .categoryTitleName!,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleMedium,
-                                  ),
-                                ],
-                              ),
-                            if (dynamicCategories.data!.length > 1)
-                              SizedBox(height: 20),
-                            LayoutBuilder(
-                              builder: (context, constraints) {
-                                double screenWidth = constraints.maxWidth;
-                                double itemWidth =
-                                    (screenWidth - (22 * 2)) /
-                                    3; // Adjust for crossAxisSpacing
-                                double itemHeight =
-                                    itemWidth *
-                                    1.2; // Adjust height dynamically
+          return PopScope(
+            onPopInvokedWithResult: (didPop, result) {
+              debugPrint("++++++++++++++");
+              context.read<HomeBloc>().add(GetDynamicHomeProductEvent());
+            },
+            child: OverlayLoaderWithAppIcon(
+              appIconSize: 60,
+              circularProgressColor: Colors.transparent,
+              overlayBackgroundColor: Colors.black87,
+              isLoading: state is CategoryLoadingState,
+              appIcon: Image.asset(loadGif, fit: BoxFit.fill),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    spacing: 16,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Explore by Categories',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                      if (dynamicCategories.data != null)
+                        for (
+                          int categoryIndex = 0;
+                          categoryIndex < dynamicCategories.data!.length;
+                          categoryIndex++
+                        )
+                          Column(
+                            children: [
+                              if (dynamicCategories.data!.length > 1)
+                                Row(
+                                  children: [
+                                    Text(
+                                      dynamicCategories
+                                          .data![categoryIndex]
+                                          .categoryTitleName!,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.titleMedium,
+                                    ),
+                                  ],
+                                ),
+                              if (dynamicCategories.data!.length > 1)
+                                SizedBox(height: 20),
+                              LayoutBuilder(
+                                builder: (context, constraints) {
+                                  double screenWidth = constraints.maxWidth;
+                                  double itemWidth =
+                                      (screenWidth - (22 * 2)) /
+                                      3; // Adjust for crossAxisSpacing
+                                  double itemHeight =
+                                      itemWidth *
+                                      1.2; // Adjust height dynamically
 
-                                List<Category>? categorydata = [
-                                  ...dynamicCategories
-                                      .data![categoryIndex]
-                                      .categories!,
-                                ]..sort((a, b) => a.index!.compareTo(b.index!));
-                                return StaggeredGrid.count(
-                                  crossAxisCount: 48,
-                                  // crossAxisCount: 3,
-                                  mainAxisSpacing: 0,
-                                  crossAxisSpacing: 15,
-                                  children: categorydata
-                                      .map(
-                                        (data) => StaggeredGridTile.count(
-                                          crossAxisCellCount: data.isHighlight!
-                                              ? 24
-                                              : 16,
-                                          mainAxisCellCount: 18,
-                                          child: InkWell(
-                                            onTap: () {
-                                              title = data.name ?? "";
-                                              id = data.id ?? "";
-                                              isMainCategory = true;
-                                              mainCatId = data.id ?? "";
-                                              isCategory = true;
-                                              catId = data.id ?? "";
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductListMenuScreen(
-                                                        title: data.name ?? "",
-                                                        id: data.id ?? "",
-                                                        isMainCategory: true,
-                                                        mainCatId:
-                                                            data.id ?? "",
-                                                        isCategory: true,
-                                                        catId: data.id ?? "",
-                                                      ),
-                                                ),
-                                              ).then((value) {});
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  height:
-                                                      itemHeight *
-                                                      0.65, // Dynamically adjust height
-                                                  decoration: BoxDecoration(
-                                                    color: const Color(
-                                                      0xFFf6f6f6,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          5,
+                                  List<Category>? categorydata =
+                                      [
+                                        ...dynamicCategories
+                                            .data![categoryIndex]
+                                            .categories!,
+                                      ]..sort(
+                                        (a, b) => a.index!.compareTo(b.index!),
+                                      );
+                                  return StaggeredGrid.count(
+                                    crossAxisCount: 48,
+                                    // crossAxisCount: 3,
+                                    mainAxisSpacing: 0,
+                                    crossAxisSpacing: 15,
+                                    children: categorydata
+                                        .map(
+                                          (data) => StaggeredGridTile.count(
+                                            crossAxisCellCount:
+                                                data.isHighlight! ? 24 : 16,
+                                            mainAxisCellCount: 18,
+                                            child: InkWell(
+                                              onTap: () {
+                                                title = data.name ?? "";
+                                                id = data.id ?? "";
+                                                isMainCategory = true;
+                                                mainCatId = data.id ?? "";
+                                                isCategory = true;
+                                                catId = data.id ?? "";
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductListMenuScreen(
+                                                          title:
+                                                              data.name ?? "",
+                                                          id: data.id ?? "",
+                                                          isMainCategory: true,
+                                                          mainCatId:
+                                                              data.id ?? "",
+                                                          isCategory: true,
+                                                          catId: data.id ?? "",
                                                         ),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: appColor
-                                                            .withAlpha(120),
-                                                        blurRadius: 0,
-                                                        offset: const Offset(
-                                                          0,
-                                                          0,
-                                                        ),
-                                                      ),
-                                                    ],
                                                   ),
-                                                  child: Center(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                            8.0,
+                                                ).then((value) {});
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    height:
+                                                        itemHeight *
+                                                        0.65, // Dynamically adjust height
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(
+                                                        0xFFf6f6f6,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            5,
                                                           ),
-                                                      child: NetworkImageWidget(
-                                                        url:
-                                                            data.imageUrl ?? "",
-                                                        fit: BoxFit.contain,
-                                                        width:
-                                                            itemWidth *
-                                                            1.5, // Adjust image width dynamically
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: appColor
+                                                              .withAlpha(120),
+                                                          blurRadius: 0,
+                                                          offset: const Offset(
+                                                            0,
+                                                            0,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Center(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                              8.0,
+                                                            ),
+                                                        child: NetworkImageWidget(
+                                                          url:
+                                                              data.imageUrl ??
+                                                              "",
+                                                          fit: BoxFit.contain,
+                                                          width:
+                                                              itemWidth *
+                                                              1.5, // Adjust image width dynamically
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                const SizedBox(height: 8),
-                                                SizedBox(
-                                                  width:
-                                                      itemWidth *
-                                                      1.1, // Ensure text fits within item width
-                                                  child: Text(
-                                                    data.name ?? "",
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Color(0xFF222222),
+                                                  const SizedBox(height: 8),
+                                                  SizedBox(
+                                                    width:
+                                                        itemWidth *
+                                                        1.1, // Ensure text fits within item width
+                                                    child: Text(
+                                                      data.name ?? "",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Color(
+                                                          0xFF222222,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                      .toList(),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                  ],
+                                        )
+                                        .toList(),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                    ],
+                  ),
                 ),
               ),
             ),

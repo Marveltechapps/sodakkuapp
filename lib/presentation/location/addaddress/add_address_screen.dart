@@ -18,9 +18,9 @@ class AddAddress extends StatefulWidget {
   final String longitude;
   String? id;
   final bool isEdit;
-  String? houseNo;
-  String? building;
-  String? landmark;
+  // String? houseNo;
+  // String? building;
+  // String? landmark;
   String? label;
 
   AddAddress({
@@ -30,9 +30,9 @@ class AddAddress extends StatefulWidget {
     required this.latitude,
     this.id,
     required this.isEdit,
-    this.houseNo,
-    this.building,
-    this.landmark,
+    // this.houseNo,
+    // this.building,
+    // this.landmark,
     this.label,
     required this.longitude,
   });
@@ -71,8 +71,28 @@ class _AddAddressState extends State<AddAddress> {
             houseNoController.clear();
             buildingController.clear();
             landmarkController.clear();
+            selectedLabel = "";
           } else if (state is SelectedLabelState) {
             selectedLabel = state.label;
+          } else if (state is AddAddressTypeingState) {
+            houseNoController.clear();
+            buildingController.clear();
+            landmarkController.clear();
+            selectedLabel = "";
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return YourLocationScreen(
+                    lat: widget.latitude,
+                    long: widget.longitude,
+                    screenType: "change",
+                  );
+                },
+              ),
+            );
+          } else if (state is AddAddressErrorState) {
+            debugPrint(state.errorMsg);
           }
         },
         builder: (context, state) {
@@ -80,11 +100,14 @@ class _AddAddressState extends State<AddAddress> {
             lat = "";
             long = "";
             selectedLabel = widget.label ?? "";
-            houseNoController.text = widget.houseNo ?? "";
-            buildingController.text = widget.building ?? "";
-            landmarkController.text = widget.landmark ?? "";
-            lat = widget.latitude;
-            long = widget.longitude;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              houseNoController.text = widget.houseNo ?? "";
+              buildingController.text = widget.building ?? "";
+              landmarkController.text = widget.landmark ?? "";
+              lat = widget.latitude;
+              long = widget.longitude;
+            });
+
             markers.add(
               Marker(
                 markerId: MarkerId('unique_id'),
@@ -98,7 +121,7 @@ class _AddAddressState extends State<AddAddress> {
                 ),
               ),
             );
-          } else if (state is AddAddressTypeingState) {}
+          }
           return Scaffold(
             backgroundColor: AddAddressStyles.backgroundColor,
             appBar: AppBar(
@@ -136,7 +159,11 @@ class _AddAddressState extends State<AddAddress> {
                           const SizedBox(height: 10),
                           _buildMapPreview(context),
                           const SizedBox(height: 18),
-                          _buildLocationInfo(widget.place, context),
+                          _buildLocationInfo(
+                            widget.place,
+                            context.read<AddAddressBloc>(),
+                            context,
+                          ),
                           const SizedBox(height: 22),
                           _buildAddressForm(
                             context.read<AddAddressBloc>(),
@@ -208,7 +235,11 @@ class _AddAddressState extends State<AddAddress> {
     );
   }
 
-  Widget _buildLocationInfo(Placemark place, BuildContext context) {
+  Widget _buildLocationInfo(
+    Placemark place,
+    AddAddressBloc addAddressBloc,
+    BuildContext context,
+  ) {
     return Row(
       children: [
         Expanded(
@@ -240,11 +271,13 @@ class _AddAddressState extends State<AddAddress> {
                     return YourLocationScreen(
                       lat: widget.latitude,
                       long: widget.longitude,
-                      screenType: widget.screenType,
+                      screenType: "change",
                     );
                   },
                 ),
               );
+            } else if (widget.screenType == "change") {
+              addAddressBloc.add(TypeEvent());
             } else {
               Navigator.pop(context);
             }
@@ -423,54 +456,6 @@ class _AddAddressState extends State<AddAddress> {
     );
   }
 
-  Widget _buildInputField(
-    String label,
-    TextEditingController controller,
-    BuildContext context,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: AddAddressStyles.labelStyle),
-        const SizedBox(height: 4),
-        TextFormField(
-          controller: controller,
-          cursorColor: appColor,
-          decoration: InputDecoration(
-            hintText: 'Enter Details',
-            hintStyle: AddAddressStyles.inputStyle,
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: greyColor), // Default border
-              borderRadius: BorderRadius.circular(10),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: appColor), // Border when focused
-              borderRadius: BorderRadius.circular(10),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: appColor), // Border when error
-              borderRadius: BorderRadius.circular(10),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: appColor,
-              ), // Border when focused & error
-              borderRadius: BorderRadius.circular(10),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 10,
-            ),
-          ),
-          style: Theme.of(context).textTheme.displayMedium,
-          onChanged: (value) {
-            context.read<AddAddressBloc>().add(TypeEvent());
-          },
-        ),
-      ],
-    );
-  }
-
   Widget _buildAddressLabels(AddAddressBloc addAddressBloc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -539,7 +524,7 @@ class _AddAddressState extends State<AddAddress> {
             widget.isEdit
                 ? addAddressBloc.add(
                     UpdateAddressEvent(
-                      id: widget.id ?? "",
+                      id: addressId,
                       userId: userId,
                       label: selectedLabel,
                       houseNo: houseNoController.text,
@@ -549,7 +534,9 @@ class _AddAddressState extends State<AddAddress> {
                           ? widget.place.name.toString()
                           : widget.place.subLocality.toString(),
                       city: widget.place.locality.toString(),
-                      state: widget.place.administrativeArea.toString(),
+                      state: widget.place.subAdministrativeArea.toString() == ""
+                          ? "State"
+                          : widget.place.subAdministrativeArea.toString(),
                       pinCode: widget.place.postalCode.toString(),
                       latitude: widget.latitude,
                       longitude: widget.longitude,
@@ -566,7 +553,9 @@ class _AddAddressState extends State<AddAddress> {
                           ? widget.place.name.toString()
                           : widget.place.subLocality.toString(),
                       city: widget.place.locality.toString(),
-                      state: widget.place.administrativeArea.toString(),
+                      state: widget.place.subAdministrativeArea.toString() == ""
+                          ? "State"
+                          : widget.place.subAdministrativeArea.toString(),
                       pinCode: widget.place.postalCode.toString(),
                       latitude: widget.latitude,
                       longitude: widget.longitude,

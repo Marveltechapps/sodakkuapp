@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => HomeBloc()),
+        // BlocProvider(create: (context) => HomeBloc()),
         BlocProvider(create: (context) => CounterCubit()),
       ],
       child: BlocConsumer<HomeBloc, HomeState>(
@@ -109,6 +109,9 @@ class HomeScreen extends StatelessWidget {
                           context.read<HomeBloc>().add(
                             GetScreenEvent(cartcount: cartCount, index: 0),
                           );
+                          context
+                                  .read<HomeBloc>()
+                                  .add(GetDynamicHomeProductEvent());
                         },
                         icon: Icon(
                           Icons.arrow_back_ios_new,
@@ -175,6 +178,9 @@ class HomeScreen extends StatelessWidget {
                               context.read<HomeBloc>().add(
                                 GetScreenEvent(cartcount: cartCount, index: 0),
                               );
+                              context.read<HomeBloc>().add(
+                                GetDynamicHomeProductEvent(),
+                              );
                             },
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -236,19 +242,21 @@ class HomeScreen extends StatelessWidget {
 
                           // Cart Button with Badge
                           GestureDetector(
-                            onTap: () {
-                              // context.read<HomeBloc>().add(GetScreenEvent(index: 2));
-                              //   Navigator.pushNamed(context, "/cart");
-                              Navigator.push(
+                            onTap: () async {
+                              var result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return CartScreen(fromScreen: 'home');
                                   },
                                 ),
-                              ).then((value) {
+                              );
+                              if (result == null) {
                                 debugPrint("*************");
                                 if (!context.mounted) return;
+                                context.read<HomeBloc>().add(
+                                  GetDynamicHomeProductEvent(),
+                                );
                                 context.read<HomeBloc>().add(
                                   GetCartCountEvent(userId: userId),
                                 );
@@ -257,7 +265,7 @@ class HomeScreen extends StatelessWidget {
                                   cartCount,
                                 );
                                 noOfIteminCart = cartCount;
-                              });
+                              }
                             },
                             child: Column(
                               mainAxisSize: MainAxisSize.min,

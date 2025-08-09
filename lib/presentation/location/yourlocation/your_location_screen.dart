@@ -105,6 +105,36 @@ class YourLocationScreen extends StatelessWidget {
               location = state.place ?? "";
               Navigator.pop(context);
               Navigator.pop(context, location);
+            } else if (state.screenType == "editaddress") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return AddAddress(
+                      latitude: state.latitude.toString(),
+                      isEdit: true,
+                      longitude: state.longitude.toString(),
+                      place: place,
+                      screenType: screenType,
+                    );
+                  },
+                ),
+              );
+            } else if (state.screenType == "change") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return AddAddress(
+                      latitude: state.latitude.toString(),
+                      isEdit: true,
+                      longitude: state.longitude.toString(),
+                      place: place,
+                      screenType: screenType,
+                    );
+                  },
+                ),
+              );
             }
             iserrorLocation = false;
           } else if (state is GetLatLonSuccessState) {
@@ -303,7 +333,10 @@ class YourLocationScreen extends StatelessWidget {
                                                   debugPrint(latitude);
                                                   debugPrint(longitude);
                                                   if (screenType == "search" ||
-                                                      screenType == "address") {
+                                                      screenType == "address" ||
+                                                      screenType ==
+                                                          "editaddress" ||
+                                                      screenType == "change") {
                                                     context
                                                         .read<LocationBloc>()
                                                         .add(

@@ -7,7 +7,10 @@ var isMainCategory = false;
 var mainCatId = "";
 var isCategory = false;
 var catId = "";
-
+var addressId = '';
+String houseNo = "";
+String building = "";
+String landmark = "";
 //
 var phoneNumber = "";
 var userId = /* "67e1891aa556c5bdf61257cc" */ "";

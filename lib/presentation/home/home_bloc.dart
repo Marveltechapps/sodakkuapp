@@ -44,6 +44,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetDynamicHomeProductEvent>(getDynamicHomeProductData);
     on<ShowBottomSheetEvent>((event, emit) => emit(BottomSheetVisible()));
   }
+  DynamicProductStyleResponse dynamicProducts = DynamicProductStyleResponse();
 
   getCartCount(GetCartCountEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoadingState());
@@ -280,6 +281,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(HomeLoadingState());
     try {
       String url = "$baseUrl/homeProduct/list?mobileNumber=$phoneNumber";
+      debugPrint(url);
       final client = await createPinnedHttpClient();
       final response = await client.get(Uri.parse(url));
       if (response.statusCode == 200) {

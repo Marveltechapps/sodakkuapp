@@ -66,6 +66,11 @@ void showSuccessDialog(
                     } else if (screenType == "editaddress") {
                       Navigator.of(context).pop();
                       Navigator.pop(context, "success");
+                    } else if (screenType == "change") {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      Navigator.pop(context);
+                      Navigator.pop(context, "success");
                     } /* else if (screenType == "screen") {
                       Navigator.of(context).pop();
                       Navigator.pop(context, "success");

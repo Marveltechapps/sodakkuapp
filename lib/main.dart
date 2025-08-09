@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sodakkuapp/apiservice/secure_storage/secure_storage.dart';
 import 'package:sodakkuapp/presentation/category/categories_screen.dart';
 import 'package:sodakkuapp/presentation/coupon/screens/applying_coupon_screen.dart';
 import 'package:sodakkuapp/presentation/entry/login/login_screen.dart';
 import 'package:sodakkuapp/presentation/entry/splash/splash_screen.dart';
+import 'package:sodakkuapp/presentation/home/home_bloc.dart';
 import 'package:sodakkuapp/presentation/home/home_screen.dart';
 import 'package:sodakkuapp/presentation/payment/payment_screen.dart';
 import 'package:sodakkuapp/presentation/settings/address/address_screen.dart';
@@ -154,7 +156,10 @@ class _MyAppState extends State<MyApp> {
         routes: {
           '/login': (context) => LoginScreen(),
           '/otp': (context) => OtpScreen(),
-          '/home': (context) => HomeScreen(),
+          '/home': (context) => BlocProvider(
+            create: (context) => HomeBloc(),
+            child: HomeScreen(),
+          ),
           '/categories': (context) => CategoriesScreen(),
           '/payment': (context) => PaymentScreen(),
           '/ApplyingCouponScreen': (context) => ApplyingCouponScreen(),

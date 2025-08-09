@@ -51,8 +51,6 @@ class HomeWidgetScreen extends StatelessWidget {
       ProductStyleResponse();
   static ProductStyleResponse nutsDriedFruitsResponse = ProductStyleResponse();
   static ProductStyleResponse riceCerealsResponse = ProductStyleResponse();
-  static DynamicProductStyleResponse dynamicProducts =
-      DynamicProductStyleResponse();
   static PageController pageController = PageController(initialPage: 0);
   static int currentPage = 0;
   static Timer? timer;
@@ -200,7 +198,7 @@ class HomeWidgetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => HomeBloc()),
+        // BlocProvider(create: (context) => HomeBloc()),
         BlocProvider(create: (context) => CategoryBloc()),
       ],
       child: BlocConsumer<HomeBloc, HomeState>(
@@ -244,7 +242,8 @@ class HomeWidgetScreen extends StatelessWidget {
             riceCerealsResponse = ProductStyleResponse();
             riceCerealsResponse = state.productStyleResponse;
           } else if (state is DynamicProductStyleResponseState) {
-            dynamicProducts = state.products;
+            context.read<HomeBloc>().dynamicProducts = state.products;
+            context.read<HomeBloc>().add(GetCartCountEvent(userId: userId));
           } else if (state is LocationSuccessState) {
             showLocationBottomSheet(
               context,
@@ -263,8 +262,8 @@ class HomeWidgetScreen extends StatelessWidget {
             addButtonClicked = state.isSelected;
             selectedIndexes = state.selectedIndexes;
             if (state.type == "screen") {
-              state.response.variants![0].userCartQuantity =
-                  (state.response.variants![0].userCartQuantity ?? 0) + 1;
+              state.response.variants![0].cartQuantity =
+                  (state.response.variants![0].cartQuantity ?? 0) + 1;
               context.read<HomeBloc>().add(
                 AddItemInCartApiEvent(
                   userId: userId,
@@ -293,16 +292,17 @@ class HomeWidgetScreen extends StatelessWidget {
                 ),
               );
             } else if (state.type == "dialog") {
-              state.response.variants![state.selectedIndexes].userCartQuantity =
+              state.response.variants![state.selectedIndexes].cartQuantity =
                   (state
                           .response
                           .variants![state.selectedIndexes]
-                          .userCartQuantity ??
+                          .cartQuantity ??
                       0) +
                   1;
             }
           } else if (state is ItemAddedToCartInHomeScreenState) {
             //   context.read<CounterCubit>().increment(1);
+            context.read<HomeBloc>().add(GetDynamicHomeProductEvent());
             context.read<HomeBloc>().add(GetCartCountEvent(userId: userId));
           } else if (state is CartDataSuccess) {
             // context.read<CounterCubit>().decrement(state.noOfItems);
@@ -315,10 +315,10 @@ class HomeWidgetScreen extends StatelessWidget {
           } else if (state is RemoveButtonClickedState) {
             // noOfIteminCart = noOfIteminCart - 1;
             if (state.type == "screen") {
-              state.response.variants![0].userCartQuantity == 0
+              state.response.variants![0].cartQuantity == 0
                   ? null
-                  : state.response.variants![0].userCartQuantity =
-                        (state.response.variants![0].userCartQuantity ?? 0) - 1;
+                  : state.response.variants![0].cartQuantity =
+                        (state.response.variants![0].cartQuantity ?? 0) - 1;
               context.read<HomeBloc>().add(
                 RemoveItemInCartApiEvent(
                   userId: userId,
@@ -333,16 +333,16 @@ class HomeWidgetScreen extends StatelessWidget {
                 ),
               );
             } else if (state.type == "dialog") {
-              state.response.variants![state.selectedIndexes].userCartQuantity =
+              state.response.variants![state.selectedIndexes].cartQuantity =
                   (state
                           .response
                           .variants![state.selectedIndexes]
-                          .userCartQuantity ??
+                          .cartQuantity ??
                       0) -
                   1;
             }
           } else if (state is ItemRemovedToCartState) {
-            context.read<CounterCubit>().decrement(1);
+            context.read<HomeBloc>().add(GetDynamicHomeProductEvent());
           } else if (state is HomeErrorState) {
             if (state.message == "Failed to fetch data") {
             } else {
@@ -773,8 +773,8 @@ class HomeWidgetScreen extends StatelessWidget {
                                     ),
                                     itemBuilder: (context, index, realIndex) {
                                       return InkWell(
-                                        onTap: () {
-                                          Navigator.push(
+                                        onTap: () async {
+                                          var result = await Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
@@ -785,8 +785,13 @@ class HomeWidgetScreen extends StatelessWidget {
                                                         "",
                                                   ),
                                             ),
-                                          ).then((value) {
+                                          );
+                                          if (result == null ||
+                                              result != null) {
                                             if (!context.mounted) return;
+                                            context.read<HomeBloc>().add(
+                                              GetDynamicHomeProductEvent(),
+                                            );
                                             context.read<HomeBloc>().add(
                                               GetCartCountEvent(userId: userId),
                                             );
@@ -797,7 +802,19 @@ class HomeWidgetScreen extends StatelessWidget {
                                                 .read<CounterCubit>()
                                                 .increment(cartCount);
                                             noOfIteminCart = cartCount;
-                                          });
+                                          }
+                                          //     .then(
+                                          //   (value) {
+                                          //     if (!context.mounted) return;
+                                          //     context.read<HomeBloc>().add(
+                                          //         GetCartCountEvent(
+                                          //             userId: userId));
+                                          //     context
+                                          //         .read<CounterCubit>()
+                                          //         .increment(cartCount);
+                                          //     noOfIteminCart = cartCount;
+                                          //   },
+                                          // );
                                           debugPrint(festivalbanners[index].id);
                                         },
                                         child: Container(
@@ -829,8 +846,8 @@ class HomeWidgetScreen extends StatelessWidget {
                                 itemCount: dailybanners.length,
                                 itemBuilder: (context, index) {
                                   return InkWell(
-                                    onTap: () {
-                                      Navigator.push(
+                                    onTap: () async {
+                                      var result = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) {
@@ -840,21 +857,21 @@ class HomeWidgetScreen extends StatelessWidget {
                                             );
                                           },
                                         ),
-                                      ).then((value) {
+                                      );
+                                      if (result == null || result != null) {
                                         if (!context.mounted) return;
+                                        context.read<HomeBloc>().add(
+                                          GetDynamicHomeProductEvent(),
+                                        );
                                         context.read<HomeBloc>().add(
                                           GetCartCountEvent(userId: userId),
                                         );
-                                        // context
-                                        //     .read<CounterCubit>()
-                                        //     .decrement(cartCount);
                                         context.read<CounterCubit>().increment(
                                           cartCount,
                                         );
                                         noOfIteminCart = cartCount;
-                                      });
+                                      }
                                       debugPrint(dailybanners[index].id);
-                                      //  Navigator.pushNamed(context, '/banner');
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 12),
@@ -912,69 +929,39 @@ class HomeWidgetScreen extends StatelessWidget {
                                         itemCount: offerbanners10.length,
                                         itemBuilder: (context, index) {
                                           return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
+                                            onTap: () async {
+                                              var result = await Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) {
                                                     return BannerScreen(
                                                       bannerId:
-                                                          offerbanners10[index]
-                                                              .id ??
+                                                          offerbanners[0].id ??
                                                           "",
                                                     );
                                                   },
                                                 ),
-                                              ).then((value) {
+                                              );
+                                              if (result == null ||
+                                                  result != null) {
                                                 if (!context.mounted) return;
+
+                                                context.read<HomeBloc>().add(
+                                                  GetDynamicHomeProductEvent(),
+                                                );
                                                 context.read<HomeBloc>().add(
                                                   GetCartCountEvent(
                                                     userId: userId,
                                                   ),
                                                 );
-                                                // context
-                                                //     .read<CounterCubit>()
-                                                //     .decrement(cartCount);
                                                 context
                                                     .read<CounterCubit>()
                                                     .increment(cartCount);
                                                 noOfIteminCart = cartCount;
-                                              });
+                                              }
                                               debugPrint(
-                                                dailybanners[index].id,
+                                                offerbanners[0].id ?? "",
                                               );
-
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) {
-                                              //       return BannerScreen(
-                                              //         bannerId:
-                                              //             offerbanners10[index]
-                                              //                 .id ??
-                                              //             "",
-                                              //       );
-                                              //     },
-                                              //   ),
-                                              // ).then((value) {
-                                              //   if (!context.mounted) return;
-                                              //   context.read<HomeBloc>().add(
-                                              //     GetCartCountEvent(
-                                              //       userId: userId,
-                                              //     ),
-                                              //   );
-                                              //   // context
-                                              //   //     .read<CounterCubit>()
-                                              //   //     .decrement(cartCount);
-                                              //   context
-                                              //       .read<CounterCubit>()
-                                              //       .increment(cartCount);
-                                              //   noOfIteminCart = cartCount;
-                                              // });
-                                              debugPrint(
-                                                offerbanners10[index].id,
-                                              );
-                                              //  Navigator.pushNamed(context, '/banner');
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(
@@ -1247,8 +1234,8 @@ class HomeWidgetScreen extends StatelessWidget {
                             //  const SizedBox(height: 27),
                             if (dealsbanners.isNotEmpty)
                               InkWell(
-                                onTap: () {
-                                  Navigator.push(
+                                onTap: () async {
+                                  var result = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
@@ -1257,20 +1244,21 @@ class HomeWidgetScreen extends StatelessWidget {
                                         );
                                       },
                                     ),
-                                  ).then((value) {
+                                  );
+                                  if (result == null || result != null) {
                                     if (!context.mounted) return;
+
+                                    context.read<HomeBloc>().add(
+                                      GetDynamicHomeProductEvent(),
+                                    );
                                     context.read<HomeBloc>().add(
                                       GetCartCountEvent(userId: userId),
                                     );
-                                    // context
-                                    //     .read<CounterCubit>()
-                                    //     .decrement(cartCount);
                                     context.read<CounterCubit>().increment(
                                       cartCount,
                                     );
                                     noOfIteminCart = cartCount;
-                                  });
-                                  debugPrint(dealsbanners[0].id ?? "");
+                                  }
                                 },
                                 child: NetworkImageWidget(
                                   url: dealsbanners[0].imageUrl ?? "",
@@ -1289,8 +1277,8 @@ class HomeWidgetScreen extends StatelessWidget {
                                     itemCount: offerbanners.length,
                                     itemBuilder: (context, index) {
                                       return InkWell(
-                                        onTap: () {
-                                          Navigator.push(
+                                        onTap: () async {
+                                          var result = await Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) {
@@ -1301,49 +1289,22 @@ class HomeWidgetScreen extends StatelessWidget {
                                                 );
                                               },
                                             ),
-                                          ).then((value) {
+                                          );
+                                          if (result == null ||
+                                              result != null) {
                                             if (!context.mounted) return;
+                                            context.read<HomeBloc>().add(
+                                              GetDynamicHomeProductEvent(),
+                                            );
                                             context.read<HomeBloc>().add(
                                               GetCartCountEvent(userId: userId),
                                             );
-                                            // context
-                                            //     .read<CounterCubit>()
-                                            //     .decrement(cartCount);
                                             context
                                                 .read<CounterCubit>()
                                                 .increment(cartCount);
                                             noOfIteminCart = cartCount;
-                                          });
-
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(
-                                          //     builder: (context) {
-                                          //       return BannerScreen(
-                                          //         bannerId:
-                                          //             offerbanners10[index]
-                                          //                 .id ??
-                                          //             "",
-                                          //       );
-                                          //     },
-                                          //   ),
-                                          // ).then((value) {
-                                          //   if (!context.mounted) return;
-                                          //   context.read<HomeBloc>().add(
-                                          //     GetCartCountEvent(
-                                          //       userId: userId,
-                                          //     ),
-                                          //   );
-                                          //   // context
-                                          //   //     .read<CounterCubit>()
-                                          //   //     .decrement(cartCount);
-                                          //   context
-                                          //       .read<CounterCubit>()
-                                          //       .increment(cartCount);
-                                          //   noOfIteminCart = cartCount;
-                                          // });
+                                          }
                                           debugPrint(offerbanners[index].id);
-                                          //  Navigator.pushNamed(context, '/banner');
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(
@@ -1376,9 +1337,10 @@ class HomeWidgetScreen extends StatelessWidget {
                             SizedBox(height: 10),
 
                             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                            if (dynamicProducts.data != null)
+                            if (context.read<HomeBloc>().dynamicProducts.data !=
+                                null)
                               Column(
-                                children: dynamicProducts.data!.map((
+                                children: context.read<HomeBloc>().dynamicProducts.data!.map((
                                   productdata,
                                 ) {
                                   List<Product> product = productdata.products!;
@@ -1628,7 +1590,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                                                         ),
                                                                       ],
                                                                     ),
-                                                                    product[i].variants![0].userCartQuantity ==
+                                                                    product[i].variants![0].cartQuantity ==
                                                                             0
                                                                         ? Expanded(
                                                                             child: InkWell(
@@ -1715,7 +1677,7 @@ class HomeWidgetScreen extends StatelessWidget {
                                                                                           right: 8,
                                                                                         ),
                                                                                         child: Text(
-                                                                                          product[i].variants![0].userCartQuantity.toString(),
+                                                                                          product[i].variants![0].cartQuantity.toString(),
                                                                                           textAlign: TextAlign.center,
                                                                                           style: GoogleFonts.poppins(
                                                                                             color: appColor,
@@ -1769,7 +1731,6 @@ class HomeWidgetScreen extends StatelessWidget {
                                   );
                                 }).toList(),
                               ),
-
                             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                           ],
                         ),

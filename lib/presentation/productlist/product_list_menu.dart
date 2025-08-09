@@ -1392,28 +1392,21 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                           ),
                                                       child: NetworkImageWidget(
                                                         url:
-                                                            selectedProductIndexes ==
-                                                                index
-                                                            ? productStyleResponse
-                                                                      .data![index]
-                                                                      .variants![productVarientIndex]
-                                                                      .isComboPack!
-                                                                  ? productStyleResponse
-                                                                            .data![index]
-                                                                            .variants![productVarientIndex]
-                                                                            .comboDetails!
-                                                                            .comboImageUrl ??
-                                                                        ""
-                                                                  : productStyleResponse
-                                                                            .data![index]
-                                                                            .variants![productVarientIndex]
-                                                                            .imageUrl ??
-                                                                        ""
-                                                            : productStyleResponse
-                                                                      .data![index]
-                                                                      .variants![0]
-                                                                      .imageUrl ??
-                                                                  "",
+                                                            productStyleResponse
+                                                                .data![index]
+                                                                .variants!
+                                                                .firstWhere(
+                                                                  (variant) =>
+                                                                      (variant.userCartQuantity ??
+                                                                          0) >
+                                                                      0,
+                                                                  orElse: () =>
+                                                                      productStyleResponse
+                                                                          .data![index]
+                                                                          .variants![0],
+                                                                )
+                                                                .imageUrl ??
+                                                            "",
                                                         fit: BoxFit.contain,
                                                         width:
                                                             itemWidth, // Ensure the width is fixed
@@ -1543,12 +1536,20 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                               children: [
                                                                 Expanded(
                                                                   child: Text(
-                                                                    selectedProductIndexes ==
-                                                                            index
-                                                                        ? productStyleResponse.data![index].variants![productVarientIndex].label ??
-                                                                              ""
-                                                                        : productStyleResponse.data![index].variants![0].label ??
-                                                                              "",
+                                                                    productStyleResponse
+                                                                            .data![index]
+                                                                            .variants!
+                                                                            .firstWhere(
+                                                                              (
+                                                                                variant,
+                                                                              ) =>
+                                                                                  (variant.userCartQuantity ??
+                                                                                      0) >
+                                                                                  0,
+                                                                              orElse: () => productStyleResponse.data![index].variants![0],
+                                                                            )
+                                                                            .label ??
+                                                                        "",
                                                                     maxLines: 1,
                                                                     overflow:
                                                                         TextOverflow
@@ -1615,12 +1616,21 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                             children: [
                                                               Expanded(
                                                                 child: Text(
-                                                                  selectedProductIndexes ==
-                                                                          index
-                                                                      ? productStyleResponse.data![index].variants![productVarientIndex].label ??
-                                                                            ""
-                                                                      : productStyleResponse.data![index].variants![0].label ??
-                                                                            "",
+                                                                  productStyleResponse
+                                                                          .data![index]
+                                                                          .variants!
+                                                                          .firstWhere(
+                                                                            (
+                                                                              variant,
+                                                                            ) =>
+                                                                                (variant.userCartQuantity ??
+                                                                                    0) >
+                                                                                0,
+                                                                            orElse: () =>
+                                                                                productStyleResponse.data![index].variants![0],
+                                                                          )
+                                                                          .label ??
+                                                                      "",
                                                                   maxLines: 1,
                                                                   overflow:
                                                                       TextOverflow
@@ -1700,89 +1710,72 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                   ],
                                                 ),
                                                 SizedBox(height: 6),
-                                                (selectedProductIndexes == index
+                                                /*  (selectedProductIndexes == index
                                                             ? productStyleResponse
-                                                                      .data![index]
-                                                                      .variants![productVarientIndex]
-                                                                      .userCartQuantity ??
-                                                                  0
+                                                                    .data![
+                                                                        index]
+                                                                    .variants![
+                                                                        productVarientIndex]
+                                                                    .userCartQuantity ??
+                                                                0
                                                             : productStyleResponse
-                                                                      .data![index]
-                                                                      .variants![0]
-                                                                      .userCartQuantity ??
-                                                                  0) ==
+                                                                    .data![
+                                                                        index]
+                                                                    .variants![
+                                                                        0]
+                                                                    .userCartQuantity ??
+                                                                0) ==
                                                         0
                                                     ? index == 0
-                                                          ? Showcase(
-                                                              targetShapeBorder:
-                                                                  const RoundedRectangleBorder(
+                                                        ? Showcase(
+                                                            targetShapeBorder:
+                                                                const RoundedRectangleBorder(
                                                                     borderRadius:
                                                                         BorderRadius.all(
-                                                                          Radius.circular(
-                                                                            20,
-                                                                          ),
-                                                                        ),
-                                                                  ),
-                                                              tooltipBackgroundColor:
-                                                                  Colors.white,
-                                                              descTextStyle:
-                                                                  TextStyle(
+                                                                            Radius.circular(20))),
+                                                            tooltipBackgroundColor:
+                                                                Colors.white,
+                                                            descTextStyle:
+                                                                TextStyle(
                                                                     color: Colors
-                                                                        .black,
-                                                                  ),
-                                                              key: _widgetKey2,
-                                                              description:
-                                                                  'Tap here to add products to cart',
-                                                              child: InkWell(
-                                                                onTap: () {
-                                                                  context
-                                                                      .read<
-                                                                        ProductListBloc
-                                                                      >()
-                                                                      .add(
-                                                                        ChangeVarientItemEvent(
-                                                                          productIndex:
-                                                                              index,
-                                                                          varientIndex:
-                                                                              selectedProductIndexes ==
-                                                                                  index
-                                                                              ? productVarientIndex
-                                                                              : 0,
-                                                                        ),
-                                                                      );
-                                                                  context
-                                                                      .read<
-                                                                        ProductListBloc
-                                                                      >()
-                                                                      .add(
-                                                                        AddButtonClikedEvent(
-                                                                          type:
-                                                                              "screen",
-                                                                          index:
-                                                                              index,
-                                                                          isButtonPressed:
-                                                                              true,
-                                                                        ),
-                                                                      );
-                                                                },
-                                                                child: Container(
-                                                                  padding:
-                                                                      const EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            1,
-                                                                      ),
+                                                                        .black),
+                                                            key: _widgetKey2,
+                                                            description:
+                                                                'Tap here to add products to cart',
+                                                            child: InkWell(
+                                                              onTap: () {
+                                                                context.read<ProductListBloc>().add(ChangeVarientItemEvent(
+                                                                    productIndex:
+                                                                        index,
+                                                                    varientIndex: selectedProductIndexes ==
+                                                                            index
+                                                                        ? productVarientIndex
+                                                                        : 0));
+                                                                context
+                                                                    .read<
+                                                                        ProductListBloc>()
+                                                                    .add(AddButtonClikedEvent(
+                                                                        type:
+                                                                            "screen",
+                                                                        index:
+                                                                            index,
+                                                                        isButtonPressed:
+                                                                            true));
+                                                              },
+                                                              child: Container(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          1),
                                                                   decoration: BoxDecoration(
-                                                                    color:
-                                                                        whitecolor,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                          20,
-                                                                        ),
-                                                                    border: Border.all(
                                                                       color:
-                                                                          appColor,
-                                                                    ),
-                                                                  ),
+                                                                          whitecolor,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              20),
+                                                                      border: Border.all(
+                                                                          color:
+                                                                              appColor)),
                                                                   height: 27,
                                                                   child: Row(
                                                                     mainAxisAlignment:
@@ -1793,7 +1786,8 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                                         "Add",
                                                                         textAlign:
                                                                             TextAlign.center,
-                                                                        style: GoogleFonts.poppins(
+                                                                        style: GoogleFonts
+                                                                            .poppins(
                                                                           color:
                                                                               appColor,
                                                                           fontSize:
@@ -1803,60 +1797,47 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                                         ),
                                                                       ),
                                                                     ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : InkWell(
-                                                              onTap: () {
-                                                                context
-                                                                    .read<
-                                                                      ProductListBloc
-                                                                    >()
-                                                                    .add(
-                                                                      ChangeVarientItemEvent(
-                                                                        productIndex:
-                                                                            index,
-                                                                        varientIndex:
-                                                                            selectedProductIndexes ==
-                                                                                index
-                                                                            ? productVarientIndex
-                                                                            : 0,
-                                                                      ),
-                                                                    );
-                                                                context
-                                                                    .read<
-                                                                      ProductListBloc
-                                                                    >()
-                                                                    .add(
-                                                                      AddButtonClikedEvent(
-                                                                        type:
-                                                                            "screen",
-                                                                        index:
-                                                                            index,
-                                                                        isButtonPressed:
-                                                                            true,
-                                                                      ),
-                                                                    );
-                                                              },
-                                                              child: Container(
+                                                                  )),
+                                                            ),
+                                                          )
+                                                        : InkWell(
+                                                            onTap: () {
+                                                              context
+                                                                  .read<
+                                                                      ProductListBloc>()
+                                                                  .add(ChangeVarientItemEvent(
+                                                                      productIndex:
+                                                                          index,
+                                                                      varientIndex: selectedProductIndexes ==
+                                                                              index
+                                                                          ? productVarientIndex
+                                                                          : 0));
+                                                              context
+                                                                  .read<
+                                                                      ProductListBloc>()
+                                                                  .add(AddButtonClikedEvent(
+                                                                      type:
+                                                                          "screen",
+                                                                      index:
+                                                                          index,
+                                                                      isButtonPressed:
+                                                                          true));
+                                                            },
+                                                            child: Container(
                                                                 padding:
-                                                                    const EdgeInsets.symmetric(
-                                                                      vertical:
-                                                                          1,
-                                                                    ),
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            1),
                                                                 decoration: BoxDecoration(
-                                                                  color:
-                                                                      whitecolor,
-                                                                  borderRadius:
-                                                                      BorderRadius.circular(
-                                                                        20,
-                                                                      ),
-                                                                  border: Border.all(
                                                                     color:
-                                                                        appColor,
-                                                                  ),
-                                                                ),
+                                                                        whitecolor,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            20),
+                                                                    border: Border.all(
+                                                                        color:
+                                                                            appColor)),
                                                                 height: 27,
                                                                 child: Row(
                                                                   mainAxisAlignment:
@@ -1868,7 +1849,8 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                                       textAlign:
                                                                           TextAlign
                                                                               .center,
-                                                                      style: GoogleFonts.poppins(
+                                                                      style: GoogleFonts
+                                                                          .poppins(
                                                                         color:
                                                                             appColor,
                                                                         fontSize:
@@ -1878,9 +1860,121 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                                       ),
                                                                     ),
                                                                   ],
+                                                                )),
+                                                          )
+                                                    : */
+                                                productStyleResponse
+                                                            .data![index]
+                                                            .variants!
+                                                            .firstWhere(
+                                                              (variant) =>
+                                                                  (variant.userCartQuantity ??
+                                                                      0) >
+                                                                  0,
+                                                              orElse: () =>
+                                                                  productStyleResponse
+                                                                      .data![index]
+                                                                      .variants![0],
+                                                            )
+                                                            .userCartQuantity
+                                                            .toString() ==
+                                                        "0"
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          final variants =
+                                                              productStyleResponse
+                                                                  .data![index]
+                                                                  .variants!;
+
+                                                          // Get index of the variant with userCartQuantity > 0
+                                                          int
+                                                          selectedVariantIndex =
+                                                              variants.indexWhere(
+                                                                (variant) =>
+                                                                    (variant.userCartQuantity ??
+                                                                        0) >
+                                                                    0,
+                                                              );
+
+                                                          // Fallback to index 0 if not found
+                                                          if (selectedVariantIndex ==
+                                                              -1) {
+                                                            selectedVariantIndex =
+                                                                0;
+                                                          }
+
+                                                          // Now you can use it like this
+                                                          final quantity =
+                                                              variants[selectedVariantIndex]
+                                                                  .userCartQuantity
+                                                                  ?.toString() ??
+                                                              "0";
+
+                                                          context
+                                                              .read<
+                                                                ProductListBloc
+                                                              >()
+                                                              .add(
+                                                                ChangeVarientItemEvent(
+                                                                  productIndex:
+                                                                      index,
+                                                                  varientIndex:
+                                                                      selectedVariantIndex,
+                                                                ),
+                                                              );
+                                                          context
+                                                              .read<
+                                                                ProductListBloc
+                                                              >()
+                                                              .add(
+                                                                AddButtonClikedEvent(
+                                                                  type:
+                                                                      "screen",
+                                                                  index: index,
+                                                                  isButtonPressed:
+                                                                      true,
+                                                                ),
+                                                              );
+                                                        },
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                vertical: 1,
+                                                              ),
+                                                          decoration: BoxDecoration(
+                                                            color: whitecolor,
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  20,
+                                                                ),
+                                                            border: Border.all(
+                                                              color: appColor,
+                                                            ),
+                                                          ),
+                                                          height: 27,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                "Add",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: GoogleFonts.poppins(
+                                                                  color:
+                                                                      appColor,
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
                                                                 ),
                                                               ),
-                                                            )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
                                                     : Container(
                                                         padding:
                                                             const EdgeInsets.symmetric(
@@ -1905,6 +1999,37 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                             Expanded(
                                                               child: InkWell(
                                                                 onTap: () {
+                                                                  final variants =
+                                                                      productStyleResponse
+                                                                          .data![index]
+                                                                          .variants!;
+
+                                                                  // Get index of the variant with userCartQuantity > 0
+                                                                  int
+                                                                  selectedVariantIndex =
+                                                                      variants.indexWhere(
+                                                                        (
+                                                                          variant,
+                                                                        ) =>
+                                                                            (variant.userCartQuantity ??
+                                                                                0) >
+                                                                            0,
+                                                                      );
+
+                                                                  // Fallback to index 0 if not found
+                                                                  if (selectedVariantIndex ==
+                                                                      -1) {
+                                                                    selectedVariantIndex =
+                                                                        0;
+                                                                  }
+
+                                                                  // Now you can use it like this
+                                                                  final quantity =
+                                                                      variants[selectedVariantIndex]
+                                                                          .userCartQuantity
+                                                                          ?.toString() ??
+                                                                      "0";
+
                                                                   context
                                                                       .read<
                                                                         ProductListBloc
@@ -1914,10 +2039,7 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                                           productIndex:
                                                                               index,
                                                                           varientIndex:
-                                                                              selectedProductIndexes ==
-                                                                                  index
-                                                                              ? productVarientIndex
-                                                                              : 0,
+                                                                              selectedVariantIndex,
                                                                         ),
                                                                       );
                                                                   context
@@ -1960,20 +2082,22 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                                     //  borderRadius: BorderRadius.circular(4),
                                                                   ),
                                                               child: Text(
-                                                                selectedProductIndexes ==
-                                                                        index
-                                                                    ? productStyleResponse
-                                                                              .data![index]
-                                                                              .variants![productVarientIndex]
-                                                                              .userCartQuantity
-                                                                              ?.toString() ??
-                                                                          "0"
-                                                                    : productStyleResponse
-                                                                              .data![index]
-                                                                              .variants![0]
-                                                                              .userCartQuantity
-                                                                              ?.toString() ??
-                                                                          "0",
+                                                                productStyleResponse
+                                                                    .data![index]
+                                                                    .variants!
+                                                                    .firstWhere(
+                                                                      (
+                                                                        variant,
+                                                                      ) =>
+                                                                          (variant.userCartQuantity ??
+                                                                              0) >
+                                                                          0,
+                                                                      orElse: () => productStyleResponse
+                                                                          .data![index]
+                                                                          .variants![0],
+                                                                    )
+                                                                    .userCartQuantity
+                                                                    .toString(),
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
@@ -1990,6 +2114,37 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                             Expanded(
                                                               child: InkWell(
                                                                 onTap: () {
+                                                                  final variants =
+                                                                      productStyleResponse
+                                                                          .data![index]
+                                                                          .variants!;
+
+                                                                  // Get index of the variant with userCartQuantity > 0
+                                                                  int
+                                                                  selectedVariantIndex =
+                                                                      variants.indexWhere(
+                                                                        (
+                                                                          variant,
+                                                                        ) =>
+                                                                            (variant.userCartQuantity ??
+                                                                                0) >
+                                                                            0,
+                                                                      );
+
+                                                                  // Fallback to index 0 if not found
+                                                                  if (selectedVariantIndex ==
+                                                                      -1) {
+                                                                    selectedVariantIndex =
+                                                                        0;
+                                                                  }
+
+                                                                  // Now you can use it like this
+                                                                  final quantity =
+                                                                      variants[selectedVariantIndex]
+                                                                          .userCartQuantity
+                                                                          ?.toString() ??
+                                                                      "0";
+
                                                                   context
                                                                       .read<
                                                                         ProductListBloc
@@ -1999,10 +2154,7 @@ class _ProductListMenuScreenState extends State<ProductListMenuScreen> {
                                                                           productIndex:
                                                                               index,
                                                                           varientIndex:
-                                                                              selectedProductIndexes ==
-                                                                                  index
-                                                                              ? productVarientIndex
-                                                                              : 0,
+                                                                              selectedVariantIndex,
                                                                         ),
                                                                       );
                                                                   context

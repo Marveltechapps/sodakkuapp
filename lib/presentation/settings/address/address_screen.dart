@@ -136,16 +136,17 @@ class AddressScreen extends StatelessWidget {
                                     ),
                                     InkWell(
                                       onTap: () async {
+                                        addressId =
+                                            getSavedAddressResponse
+                                                .data![i]
+                                                .id ??
+                                            "";
                                         var res = await Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) {
                                               return AddAddress(
-                                                id:
-                                                    getSavedAddressResponse
-                                                        .data![i]
-                                                        .id ??
-                                                    "",
+                                                id: addressId,
                                                 label: getSavedAddressResponse
                                                     .data![i]
                                                     .label,

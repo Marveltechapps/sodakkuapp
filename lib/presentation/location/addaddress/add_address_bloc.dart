@@ -20,7 +20,7 @@ class AddAddressBloc extends Bloc<AddAddressEvent, AddAddressState> {
   }
 
   typefunction(TypeEvent event, Emitter<AddAddressState> emit) {
-    emit(AddAddressLoadingState());
+   // emit(AddAddressLoadingState());
     emit(AddAddressTypeingState());
   }
 
