@@ -20,8 +20,8 @@ class AddAddressBloc extends Bloc<AddAddressEvent, AddAddressState> {
   }
 
   typefunction(TypeEvent event, Emitter<AddAddressState> emit) {
-   // emit(AddAddressLoadingState());
-    emit(AddAddressTypeingState());
+    emit(AddAddressLoadingState());
+    emit(AddAddressTypeingState(screenType: event.screenType));
   }
 
   selectLabelFunction(SelectLabelEvent event, Emitter<AddAddressState> emit) {

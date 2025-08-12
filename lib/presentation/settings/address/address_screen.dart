@@ -141,6 +141,42 @@ class AddressScreen extends StatelessWidget {
                                                 .data![i]
                                                 .id ??
                                             "";
+                                        houseNo =
+                                            getSavedAddressResponse
+                                                .data![i]
+                                                .details!
+                                                .houseNo ??
+                                            "";
+                                        building =
+                                            getSavedAddressResponse
+                                                .data![i]
+                                                .details!
+                                                .building ??
+                                            "";
+                                        landmark =
+                                            getSavedAddressResponse
+                                                .data![i]
+                                                .details!
+                                                .landmark ??
+                                            "";
+                                        houseNo =
+                                            getSavedAddressResponse
+                                                .data![i]
+                                                .details!
+                                                .houseNo ??
+                                            "";
+                                        building =
+                                            getSavedAddressResponse
+                                                .data![i]
+                                                .details!
+                                                .building ??
+                                            "";
+                                        landmark =
+                                            getSavedAddressResponse
+                                                .data![i]
+                                                .details!
+                                                .landmark ??
+                                            "";
                                         var res = await Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -150,20 +186,7 @@ class AddressScreen extends StatelessWidget {
                                                 label: getSavedAddressResponse
                                                     .data![i]
                                                     .label,
-                                                houseNo: getSavedAddressResponse
-                                                    .data![i]
-                                                    .details!
-                                                    .houseNo,
-                                                building:
-                                                    getSavedAddressResponse
-                                                        .data![i]
-                                                        .details!
-                                                        .building,
-                                                landmark:
-                                                    getSavedAddressResponse
-                                                        .data![i]
-                                                        .details!
-                                                        .landmark,
+
                                                 latitude:
                                                     getSavedAddressResponse
                                                         .data![i]

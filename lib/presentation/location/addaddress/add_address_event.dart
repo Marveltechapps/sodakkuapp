@@ -1,6 +1,9 @@
 abstract class AddAddressEvent {}
 
-class TypeEvent extends AddAddressEvent {}
+class TypeEvent extends AddAddressEvent {
+  final String screenType;
+  TypeEvent({required this.screenType});
+}
 
 class SaveAddressEvent extends AddAddressEvent {
   final String userId;

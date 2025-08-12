@@ -6,7 +6,6 @@ import 'package:sodakkuapp/presentation/location/addaddress/add_address_bloc.dar
 import 'package:sodakkuapp/presentation/location/addaddress/add_address_event.dart';
 import 'package:sodakkuapp/presentation/location/addaddress/add_address_state.dart';
 import 'package:sodakkuapp/presentation/location/yourlocation/your_location_screen.dart';
-import 'package:sodakkuapp/presentation/settings/address/address_bloc.dart';
 import 'package:sodakkuapp/presentation/widgets/success_dialog_widget.dart';
 import 'package:sodakkuapp/utils/constant.dart';
 import '../../widgets/cart/add_address_styles.dart';
@@ -79,18 +78,36 @@ class _AddAddressState extends State<AddAddress> {
             buildingController.clear();
             landmarkController.clear();
             selectedLabel = "";
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return YourLocationScreen(
-                    lat: widget.latitude,
-                    long: widget.longitude,
-                    screenType: "change",
-                  );
-                },
-              ),
-            );
+            houseNo = "";
+            building = "";
+            landmark = "";
+            if (state.screenType == "editaddress") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return YourLocationScreen(
+                      lat: widget.latitude,
+                      long: widget.longitude,
+                      screenType: "change",
+                    );
+                  },
+                ),
+              );
+            } else if (state.screenType == "change") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return YourLocationScreen(
+                      lat: widget.latitude,
+                      long: widget.longitude,
+                      screenType: "change",
+                    );
+                  },
+                ),
+              );
+            }
           } else if (state is AddAddressErrorState) {
             debugPrint(state.errorMsg);
           }
@@ -101,9 +118,9 @@ class _AddAddressState extends State<AddAddress> {
             long = "";
             selectedLabel = widget.label ?? "";
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              houseNoController.text = widget.houseNo ?? "";
-              buildingController.text = widget.building ?? "";
-              landmarkController.text = widget.landmark ?? "";
+              houseNoController.text = houseNo;
+              buildingController.text = building;
+              landmarkController.text = landmark;
               lat = widget.latitude;
               long = widget.longitude;
             });
@@ -264,20 +281,9 @@ class _AddAddressState extends State<AddAddress> {
           onPressed: () {
             debugPrint(widget.screenType);
             if (widget.screenType == "editaddress") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return YourLocationScreen(
-                      lat: widget.latitude,
-                      long: widget.longitude,
-                      screenType: "change",
-                    );
-                  },
-                ),
-              );
+              addAddressBloc.add(TypeEvent(screenType: widget.screenType));
             } else if (widget.screenType == "change") {
-              addAddressBloc.add(TypeEvent());
+              addAddressBloc.add(TypeEvent(screenType: widget.screenType));
             } else {
               Navigator.pop(context);
             }

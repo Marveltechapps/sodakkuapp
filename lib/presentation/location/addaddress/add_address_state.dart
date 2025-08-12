@@ -6,7 +6,11 @@ class AddAddressInitialState extends AddAddressState {}
 
 class AddAddressLoadingState extends AddAddressState {}
 
-class AddAddressTypeingState extends AddAddressState {}
+class AddAddressTypeingState extends AddAddressState {
+  final String screenType;
+
+  AddAddressTypeingState({required this.screenType});
+}
 
 class AddAddressSaveSuccess extends AddAddressState {
   final AddAddressSaveResponse addAddressSaveResponse;
